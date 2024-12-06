@@ -1,0 +1,1329 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}c:\Mapas de pobreza\fgt0\01_Data\output\modelo_fgt0.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 6 Dec 2024, 12:19:25
+{txt}r; t=0.00 12:19:25
+
+{com}. /*******************************************************************************
+> * Project:         GUATEMALA - SAE Nivel Municipal + Proyecto con SEGEPLAN
+> * Sandra Segovia (ssegoviajuarez@worldbank.org)         
+> * Based on Guidelines  for Poverty Mapping (Corral, Molina, Cojocaru, Segovia)   
+> *******************************************************************************/
+. set more off
+{txt}r; t=0.00 12:19:25
+
+{com}. clear all
+{res}{txt}r; t=0.01 12:19:25
+
+{com}. 
+. version 15
+{txt}r; t=0.00 12:19:25
+
+{com}. set matsize 8000
+{txt}r; t=0.00 12:19:25
+
+{com}. set seed 648743
+{txt}r; t=0.00 12:19:25
+
+{com}. ********************************************************************************
+. **#                                     PARTE 1: Importar covariables
+. ********************************************************************************
+. use "$input\FHcensus_mun.dta", clear
+{txt}r; t=0.00 12:19:25
+
+{com}. // Normalizar covariables
+. unab covars: mun_* depto_*
+{txt}r; t=0.00 12:19:25
+
+{com}.         foreach x of local covars {c -(}
+{txt}  2{com}.                 qui: sum `x'
+{txt}  3{com}.                 replace `x' = (`x' - r(mean))/r(sd)
+{txt}  4{com}.         {c )-}
+{txt}(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+(340 real changes made)
+r; t=0.01 12:19:25
+
+{com}. 
+.         
+.         // Crear un loop para etiquetar variables automáticamente
+.         foreach var of varlist mun_* {c -(}
+{txt}  2{com}.                 local newname = substr("`var'", 5, .)  // Eliminar los primeros 4 caracteres ("mun_")
+{txt}  3{com}.                 label var `var' "`newname' (nivel mun)"
+{txt}  4{com}.         {c )-}
+{txt}r; t=0.00 12:19:25
+
+{com}.         foreach var of varlist depto_* {c -(}
+{txt}  2{com}.                 local newname = substr("`var'", 7, .)  // Eliminar los primeros 4 caracteres ("mun_")
+{txt}  3{com}.                 label var `var' "`newname' (nivel depto)"
+{txt}  4{com}.         {c )-}
+{txt}r; t=0.00 12:19:25
+
+{com}. 
+.                 
+.         tempfile census
+{txt}r; t=0.00 12:19:25
+
+{com}.         save `census', replace
+{txt}{p 0 4 2}
+(file {bf}
+C:\Users\Usuario\AppData\Local\Temp\ST_48e0_000001.tmp{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+C:\Users\Usuario\AppData\Local\Temp\ST_48e0_000001.tmp{rm}
+saved
+as .dta format
+{p_end}
+r; t=0.00 12:19:25
+
+{com}. 
+.         //importar estimaciones directas        
+.         use "$input\direct.dta", clear
+{txt}r; t=0.00 12:19:25
+
+{com}.                 
+.                 keep if indicator == "$indi" & area == "mun"
+{txt}(1,055 observations deleted)
+r; t=0.00 12:19:25
+
+{com}.                 keep mun num_psu N N_hhsize popw hhw mean dir_* zero            
+{txt}r; t=0.00 12:19:25
+
+{com}.                 merge 1:1 mun using `census'
+{res}{txt}(label {bf:{txt}labels0} already defined)
+(label {bf:{txt}labels1} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}              19
+{txt}{col 9}from master{col 30}{res}               0{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              19{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}             321{txt}  (_merge==3)
+{col 5}{hline 41}
+r; t=0.02 12:19:25
+
+{com}.                 drop _merge
+{txt}r; t=0.00 12:19:25
+
+{com}. 
+. ********************************************************************************
+. **#                                     PARTE 2: Seleccion del modelo
+. ********************************************************************************
+. 
+. ********************************************************************************
+. **# Identifcar coeficientes diferentes a 0      
+. ********************************************************************************                
+.         
+.         // Drop por dimensiones, causando estimaciones>1
+.         drop depto_tot_* mun_tot_* 
+{txt}r; t=0.00 12:19:25
+
+{com}.         drop mun_jefe_secundaria mun_p_secundaria 
+{txt}r; t=0.00 12:19:25
+
+{com}.                 
+.         //Crear un macro  para almacenar variables con coeficientes diferentes de cero
+.         unab vars: mun_* depto_*  
+{txt}r; t=0.00 12:19:25
+
+{com}.         reg dir_mean `vars' 
+{txt}{p 0 6 2}note: {bf:mun_p_dependencia} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_radio} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_tv} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_refri} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_lavadora} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_compu} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_internet} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_inodoro} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_electricidad} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_basura_rec} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_gas} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_pared_adec} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_techo_adec} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_piso_adec} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_uso_compu} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_hombre} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_edad} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_adulto} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_indigena} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_menos_prim} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_primaria} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_alfabeto} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_cuentaprop} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_asalariado} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_ocupa} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_pea} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_pei} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_jefe_casado} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_menor15} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_adulto} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_indigena} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_materna_esp} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_edad_hogar} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_dependencia} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_menos_prim} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_primaria} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_secundaria} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_alfabeto} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_asalariado} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_ocupa} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_pea} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_p_pei} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_ln_tot_cuartos} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_ln_tot_dorms} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_ln_tot_miembros} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_ln_edad_hogar} omitted because of collinearity.{p_end}
+{p 0 6 2}note: {bf:depto_ln_jefe_edad} omitted because of collinearity.{p_end}
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       302
+{txt}{hline 13}{c +}{hline 34}   F(85, 216)      = {res}    10.30
+{txt}       Model {c |} {res} 11.7849494        85  .138646464   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res}  2.9072975       216  .013459711   {txt}R-squared       ={res}    0.8021
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.7243
+{txt}       Total {c |} {res} 14.6922469       301  .048811452   {txt}Root MSE        =   {res} .11602
+
+{txt}{hline 23}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}              dir_mean{col 24}{c |} Coefficient{col 36}  Std. err.{col 48}      t{col 56}   P>|t|{col 64}     [95% con{col 77}f. interval]
+{hline 23}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 13}mun_radio {c |}{col 24}{res}{space 2}-.0146566{col 36}{space 2}  .022174{col 47}{space 1}   -0.66{col 56}{space 3}0.509{col 64}{space 4}-.0583617{col 77}{space 3} .0290486
+{txt}{space 16}mun_tv {c |}{col 24}{res}{space 2}-.0629938{col 36}{space 2} .0525333{col 47}{space 1}   -1.20{col 56}{space 3}0.232{col 64}{space 4}-.1665374{col 77}{space 3} .0405497
+{txt}{space 11}mun_tvcable {c |}{col 24}{res}{space 2}-.0292563{col 36}{space 2} .0237499{col 47}{space 1}   -1.23{col 56}{space 3}0.219{col 64}{space 4}-.0760674{col 77}{space 3} .0175549
+{txt}{space 13}mun_refri {c |}{col 24}{res}{space 2} .0398503{col 36}{space 2} .0473104{col 47}{space 1}    0.84{col 56}{space 3}0.401{col 64}{space 4}-.0533989{col 77}{space 3} .1330995
+{txt}{space 7}mun_tanque_agua {c |}{col 24}{res}{space 2}-.0083345{col 36}{space 2} .0118123{col 47}{space 1}   -0.71{col 56}{space 3}0.481{col 64}{space 4}-.0316165{col 77}{space 3} .0149476
+{txt}{space 10}mun_lavadora {c |}{col 24}{res}{space 2}-.0125484{col 36}{space 2} .0338741{col 47}{space 1}   -0.37{col 56}{space 3}0.711{col 64}{space 4}-.0793146{col 77}{space 3} .0542178
+{txt}{space 13}mun_compu {c |}{col 24}{res}{space 2}-.0874279{col 36}{space 2} .0656076{col 47}{space 1}   -1.33{col 56}{space 3}0.184{col 64}{space 4} -.216741{col 77}{space 3} .0418852
+{txt}{space 10}mun_internet {c |}{col 24}{res}{space 2} .0065159{col 36}{space 2} .0332119{col 47}{space 1}    0.20{col 56}{space 3}0.845{col 64}{space 4} -.058945{col 77}{space 3} .0719768
+{txt}{space 5}mun_agua_caliente {c |}{col 24}{res}{space 2}-.0174619{col 36}{space 2} .0197676{col 47}{space 1}   -0.88{col 56}{space 3}0.378{col 64}{space 4} -.056424{col 77}{space 3} .0215002
+{txt}{space 14}mun_moto {c |}{col 24}{res}{space 2}-.0180427{col 36}{space 2}  .018938{col 47}{space 1}   -0.95{col 56}{space 3}0.342{col 64}{space 4}-.0553696{col 77}{space 3} .0192841
+{txt}{space 13}mun_carro {c |}{col 24}{res}{space 2}-.0581589{col 36}{space 2} .0288596{col 47}{space 1}   -2.02{col 56}{space 3}0.045{col 64}{space 4}-.1150413{col 77}{space 3}-.0012765
+{txt}{space 13}mun_urban {c |}{col 24}{res}{space 2}  .039642{col 36}{space 2} .0139818{col 47}{space 1}    2.84{col 56}{space 3}0.005{col 64}{space 4} .0120838{col 77}{space 3} .0672001
+{txt}{space 10}mun_agua_tub {c |}{col 24}{res}{space 2}-.0129419{col 36}{space 2} .0121276{col 47}{space 1}   -1.07{col 56}{space 3}0.287{col 64}{space 4}-.0368454{col 77}{space 3} .0109617
+{txt}{space 11}mun_inodoro {c |}{col 24}{res}{space 2} .0902763{col 36}{space 2} .0297526{col 47}{space 1}    3.03{col 56}{space 3}0.003{col 64}{space 4} .0316336{col 77}{space 3}  .148919
+{txt}{space 9}mun_bano_priv {c |}{col 24}{res}{space 2}-.0177394{col 36}{space 2} .0175281{col 47}{space 1}   -1.01{col 56}{space 3}0.313{col 64}{space 4}-.0522875{col 77}{space 3} .0168086
+{txt}{space 11}mun_drenaje {c |}{col 24}{res}{space 2}-.0541166{col 36}{space 2}  .025405{col 47}{space 1}   -2.13{col 56}{space 3}0.034{col 64}{space 4}-.1041901{col 77}{space 3}-.0040432
+{txt}{space 6}mun_electricidad {c |}{col 24}{res}{space 2}-.0349577{col 36}{space 2} .0252561{col 47}{space 1}   -1.38{col 56}{space 3}0.168{col 64}{space 4}-.0847376{col 77}{space 3} .0148221
+{txt}{space 8}mun_basura_rec {c |}{col 24}{res}{space 2}-.0072459{col 36}{space 2} .0182063{col 47}{space 1}   -0.40{col 56}{space 3}0.691{col 64}{space 4}-.0431306{col 77}{space 3} .0286388
+{txt}{space 12}mun_cocina {c |}{col 24}{res}{space 2} .0231263{col 36}{space 2} .0124082{col 47}{space 1}    1.86{col 56}{space 3}0.064{col 64}{space 4}-.0013303{col 77}{space 3}  .047583
+{txt}{space 15}mun_gas {c |}{col 24}{res}{space 2} .0197977{col 36}{space 2}   .04254{col 47}{space 1}    0.47{col 56}{space 3}0.642{col 64}{space 4}-.0640489{col 77}{space 3} .1036443
+{txt}{space 8}mun_pared_adec {c |}{col 24}{res}{space 2}-.0048461{col 36}{space 2}  .021222{col 47}{space 1}   -0.23{col 56}{space 3}0.820{col 64}{space 4}-.0466749{col 77}{space 3} .0369827
+{txt}{space 8}mun_techo_adec {c |}{col 24}{res}{space 2} .0448646{col 36}{space 2} .0230599{col 47}{space 1}    1.95{col 56}{space 3}0.053{col 64}{space 4}-.0005866{col 77}{space 3} .0903157
+{txt}{space 9}mun_piso_adec {c |}{col 24}{res}{space 2} .0114254{col 36}{space 2}  .031802{col 47}{space 1}    0.36{col 56}{space 3}0.720{col 64}{space 4}-.0512566{col 77}{space 3} .0741073
+{txt}{space 7}mun_uso_celular {c |}{col 24}{res}{space 2}-.0139901{col 36}{space 2}  .019511{col 47}{space 1}   -0.72{col 56}{space 3}0.474{col 64}{space 4}-.0524463{col 77}{space 3} .0244662
+{txt}{space 9}mun_uso_compu {c |}{col 24}{res}{space 2} .1197064{col 36}{space 2} .0657862{col 47}{space 1}    1.82{col 56}{space 3}0.070{col 64}{space 4}-.0099587{col 77}{space 3} .2493715
+{txt}{space 6}mun_uso_internet {c |}{col 24}{res}{space 2} .0526673{col 36}{space 2} .0278434{col 47}{space 1}    1.89{col 56}{space 3}0.060{col 64}{space 4}-.0022122{col 77}{space 3} .1075468
+{txt}{space 7}mun_jefe_hombre {c |}{col 24}{res}{space 2} .0159379{col 36}{space 2} .0218503{col 47}{space 1}    0.73{col 56}{space 3}0.467{col 64}{space 4}-.0271293{col 77}{space 3} .0590051
+{txt}{space 9}mun_jefe_edad {c |}{col 24}{res}{space 2} .4674005{col 36}{space 2} .3963402{col 47}{space 1}    1.18{col 56}{space 3}0.240{col 64}{space 4} -.313789{col 77}{space 3}  1.24859
+{txt}{space 6}mun_jefe_anciano {c |}{col 24}{res}{space 2} 2.004472{col 36}{space 2} 1.552772{col 47}{space 1}    1.29{col 56}{space 3}0.198{col 64}{space 4}-1.056054{col 77}{space 3} 5.064997
+{txt}{space 7}mun_jefe_adulto {c |}{col 24}{res}{space 2} 2.192368{col 36}{space 2} 1.550929{col 47}{space 1}    1.41{col 56}{space 3}0.159{col 64}{space 4}-.8645246{col 77}{space 3}  5.24926
+{txt}{space 5}mun_jefe_indigena {c |}{col 24}{res}{space 2}-.3618138{col 36}{space 2} .4325742{col 47}{space 1}   -0.84{col 56}{space 3}0.404{col 64}{space 4}-1.214421{col 77}{space 3} .4907932
+{txt}{space 2}mun_jefe_materna_esp {c |}{col 24}{res}{space 2}  .036409{col 36}{space 2} .1161477{col 47}{space 1}    0.31{col 56}{space 3}0.754{col 64}{space 4} -.192519{col 77}{space 3}  .265337
+{txt}{space 3}mun_jefe_menos_prim {c |}{col 24}{res}{space 2} .3280607{col 36}{space 2}  .195632{col 47}{space 1}    1.68{col 56}{space 3}0.095{col 64}{space 4}-.0575314{col 77}{space 3} .7136527
+{txt}{space 5}mun_jefe_primaria {c |}{col 24}{res}{space 2} .2838452{col 36}{space 2} .1298449{col 47}{space 1}    2.19{col 56}{space 3}0.030{col 64}{space 4} .0279198{col 77}{space 3} .5397705
+{txt}{space 5}mun_jefe_edu_priv {c |}{col 24}{res}{space 2}-.0100114{col 36}{space 2}  .009857{col 47}{space 1}   -1.02{col 56}{space 3}0.311{col 64}{space 4}-.0294397{col 77}{space 3} .0094168
+{txt}{space 5}mun_jefe_alfabeto {c |}{col 24}{res}{space 2} -.094018{col 36}{space 2} .0946045{col 47}{space 1}   -0.99{col 56}{space 3}0.321{col 64}{space 4}-.2804842{col 77}{space 3} .0924481
+{txt}{space 3}mun_jefe_cuentaprop {c |}{col 24}{res}{space 2} .0975331{col 36}{space 2} .0696648{col 47}{space 1}    1.40{col 56}{space 3}0.163{col 64}{space 4}-.0397767{col 77}{space 3}  .234843
+{txt}{space 3}mun_jefe_asalariado {c |}{col 24}{res}{space 2} .2459295{col 36}{space 2}  .084877{col 47}{space 1}    2.90{col 56}{space 3}0.004{col 64}{space 4} .0786362{col 77}{space 3} .4132227
+{txt}{space 8}mun_jefe_ocupa {c |}{col 24}{res}{space 2} -.660881{col 36}{space 2} .3033237{col 47}{space 1}   -2.18{col 56}{space 3}0.030{col 64}{space 4}-1.258734{col 77}{space 3}-.0630278
+{txt}{space 10}mun_jefe_pea {c |}{col 24}{res}{space 2}  .556434{col 36}{space 2} .5160453{col 47}{space 1}    1.08{col 56}{space 3}0.282{col 64}{space 4}-.4606951{col 77}{space 3} 1.573563
+{txt}{space 10}mun_jefe_pei {c |}{col 24}{res}{space 2} .0714941{col 36}{space 2} .4024325{col 47}{space 1}    0.18{col 56}{space 3}0.859{col 64}{space 4}-.7217033{col 77}{space 3} .8646916
+{txt}{space 7}mun_jefe_casado {c |}{col 24}{res}{space 2}   .04856{col 36}{space 2} .0713237{col 47}{space 1}    0.68{col 56}{space 3}0.497{col 64}{space 4}-.0920195{col 77}{space 3} .1891395
+{txt}{space 10}mun_p_hombre {c |}{col 24}{res}{space 2}-.0331491{col 36}{space 2} .0232764{col 47}{space 1}   -1.42{col 56}{space 3}0.156{col 64}{space 4} -.079027{col 77}{space 3} .0127288
+{txt}{space 9}mun_p_menor15 {c |}{col 24}{res}{space 2}-.3328823{col 36}{space 2} .2529753{col 47}{space 1}   -1.32{col 56}{space 3}0.190{col 64}{space 4}-.8314984{col 77}{space 3} .1657339
+{txt}{space 10}mun_p_adulto {c |}{col 24}{res}{space 2}-.2637458{col 36}{space 2} .1626712{col 47}{space 1}   -1.62{col 56}{space 3}0.106{col 64}{space 4}-.5843719{col 77}{space 3} .0568803
+{txt}{space 8}mun_p_indigena {c |}{col 24}{res}{space 2}  .383697{col 36}{space 2} .4320705{col 47}{space 1}    0.89{col 56}{space 3}0.376{col 64}{space 4}-.4679173{col 77}{space 3} 1.235311
+{txt}{space 5}mun_p_materna_esp {c |}{col 24}{res}{space 2} .0161307{col 36}{space 2} .1159385{col 47}{space 1}    0.14{col 56}{space 3}0.889{col 64}{space 4}-.2123851{col 77}{space 3} .2446464
+{txt}{space 8}mun_edad_hogar {c |}{col 24}{res}{space 2}-.2477928{col 36}{space 2} .2931746{col 47}{space 1}   -0.85{col 56}{space 3}0.399{col 64}{space 4}-.8256421{col 77}{space 3} .3300564
+{txt}{space 5}mun_p_dependencia {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}mun_p_menos_prim {c |}{col 24}{res}{space 2}-.2662148{col 36}{space 2}  .169868{col 47}{space 1}   -1.57{col 56}{space 3}0.119{col 64}{space 4}-.6010259{col 77}{space 3} .0685964
+{txt}{space 8}mun_p_primaria {c |}{col 24}{res}{space 2} -.181079{col 36}{space 2} .1011264{col 47}{space 1}   -1.79{col 56}{space 3}0.075{col 64}{space 4}   -.3804{col 77}{space 3} .0182419
+{txt}{space 10}mun_p_asiste {c |}{col 24}{res}{space 2}-.0389307{col 36}{space 2} .0228273{col 47}{space 1}   -1.71{col 56}{space 3}0.090{col 64}{space 4}-.0839235{col 77}{space 3} .0060621
+{txt}{space 8}mun_p_alfabeto {c |}{col 24}{res}{space 2} .0939235{col 36}{space 2} .1034727{col 47}{space 1}    0.91{col 56}{space 3}0.365{col 64}{space 4}-.1100219{col 77}{space 3} .2978689
+{txt}{space 6}mun_p_cuentaprop {c |}{col 24}{res}{space 2} -.069032{col 36}{space 2} .0659679{col 47}{space 1}   -1.05{col 56}{space 3}0.297{col 64}{space 4}-.1990554{col 77}{space 3} .0609913
+{txt}{space 6}mun_p_asalariado {c |}{col 24}{res}{space 2}-.2607656{col 36}{space 2} .1031423{col 47}{space 1}   -2.53{col 56}{space 3}0.012{col 64}{space 4}-.4640599{col 77}{space 3}-.0574713
+{txt}{space 11}mun_p_ocupa {c |}{col 24}{res}{space 2} .8854116{col 36}{space 2} .3484622{col 47}{space 1}    2.54{col 56}{space 3}0.012{col 64}{space 4} .1985901{col 77}{space 3} 1.572233
+{txt}{space 13}mun_p_pea {c |}{col 24}{res}{space 2}-.7573636{col 36}{space 2} .4093522{col 47}{space 1}   -1.85{col 56}{space 3}0.066{col 64}{space 4}  -1.5642{col 77}{space 3} .0494726
+{txt}{space 13}mun_p_pei {c |}{col 24}{res}{space 2} -.050651{col 36}{space 2} .2023092{col 47}{space 1}   -0.25{col 56}{space 3}0.803{col 64}{space 4} -.449404{col 77}{space 3} .3481019
+{txt}{space 10}mun_p_casado {c |}{col 24}{res}{space 2}-.0275804{col 36}{space 2} .0742637{col 47}{space 1}   -0.37{col 56}{space 3}0.711{col 64}{space 4}-.1739546{col 77}{space 3} .1187939
+{txt}{space 4}mun_ln_tot_cuartos {c |}{col 24}{res}{space 2}-.0004876{col 36}{space 2}    .0232{col 47}{space 1}   -0.02{col 56}{space 3}0.983{col 64}{space 4}-.0462149{col 77}{space 3} .0452397
+{txt}{space 6}mun_ln_tot_dorms {c |}{col 24}{res}{space 2} .0216837{col 36}{space 2} .0290628{col 47}{space 1}    0.75{col 56}{space 3}0.456{col 64}{space 4}-.0355994{col 77}{space 3} .0789667
+{txt}{space 6}mun_ln_tot_migra {c |}{col 24}{res}{space 2}-.0054277{col 36}{space 2} .0114307{col 47}{space 1}   -0.47{col 56}{space 3}0.635{col 64}{space 4}-.0279576{col 77}{space 3} .0171023
+{txt}{space 3}mun_ln_tot_miembros {c |}{col 24}{res}{space 2} .0824995{col 36}{space 2} .0650223{col 47}{space 1}    1.27{col 56}{space 3}0.206{col 64}{space 4}-.0456599{col 77}{space 3} .2106588
+{txt}{space 5}mun_ln_edad_hogar {c |}{col 24}{res}{space 2} .0588437{col 36}{space 2} .2532835{col 47}{space 1}    0.23{col 56}{space 3}0.817{col 64}{space 4}  -.44038{col 77}{space 3} .5580673
+{txt}{space 6}mun_ln_jefe_edad {c |}{col 24}{res}{space 2}-.3007642{col 36}{space 2} .3308082{col 47}{space 1}   -0.91{col 56}{space 3}0.364{col 64}{space 4}-.9527897{col 77}{space 3} .3512612
+{txt}{space 11}depto_radio {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 14}depto_tv {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 9}depto_tvcable {c |}{col 24}{res}{space 2}  .006913{col 36}{space 2} .0784916{col 47}{space 1}    0.09{col 56}{space 3}0.930{col 64}{space 4}-.1477946{col 77}{space 3} .1616205
+{txt}{space 11}depto_refri {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 5}depto_tanque_agua {c |}{col 24}{res}{space 2}-.0215123{col 36}{space 2}  .021155{col 47}{space 1}   -1.02{col 56}{space 3}0.310{col 64}{space 4} -.063209{col 77}{space 3} .0201844
+{txt}{space 8}depto_lavadora {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 11}depto_compu {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 8}depto_internet {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 3}depto_agua_caliente {c |}{col 24}{res}{space 2} .0342413{col 36}{space 2} .0530614{col 47}{space 1}    0.65{col 56}{space 3}0.519{col 64}{space 4}-.0703431{col 77}{space 3} .1388256
+{txt}{space 12}depto_moto {c |}{col 24}{res}{space 2}-.0063994{col 36}{space 2} .0353033{col 47}{space 1}   -0.18{col 56}{space 3}0.856{col 64}{space 4}-.0759825{col 77}{space 3} .0631836
+{txt}{space 11}depto_carro {c |}{col 24}{res}{space 2} .0278674{col 36}{space 2}  .076025{col 47}{space 1}    0.37{col 56}{space 3}0.714{col 64}{space 4}-.1219783{col 77}{space 3} .1777132
+{txt}{space 11}depto_urban {c |}{col 24}{res}{space 2} .0257281{col 36}{space 2} .0443548{col 47}{space 1}    0.58{col 56}{space 3}0.562{col 64}{space 4}-.0616954{col 77}{space 3} .1131517
+{txt}{space 8}depto_agua_tub {c |}{col 24}{res}{space 2}-.0452641{col 36}{space 2} .0345502{col 47}{space 1}   -1.31{col 56}{space 3}0.192{col 64}{space 4}-.1133628{col 77}{space 3} .0228347
+{txt}{space 9}depto_inodoro {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 7}depto_bano_priv {c |}{col 24}{res}{space 2}-.0876746{col 36}{space 2} .0318156{col 47}{space 1}   -2.76{col 56}{space 3}0.006{col 64}{space 4}-.1503834{col 77}{space 3}-.0249657
+{txt}{space 9}depto_drenaje {c |}{col 24}{res}{space 2} .0779115{col 36}{space 2} .0401062{col 47}{space 1}    1.94{col 56}{space 3}0.053{col 64}{space 4}-.0011381{col 77}{space 3}  .156961
+{txt}{space 4}depto_electricidad {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}depto_basura_rec {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 10}depto_cocina {c |}{col 24}{res}{space 2} .0467188{col 36}{space 2} .0237116{col 47}{space 1}    1.97{col 56}{space 3}0.050{col 64}{space 4} -.000017{col 77}{space 3} .0934545
+{txt}{space 13}depto_gas {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}depto_pared_adec {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}depto_techo_adec {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 7}depto_piso_adec {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 5}depto_uso_celular {c |}{col 24}{res}{space 2} .0464965{col 36}{space 2} .0240446{col 47}{space 1}    1.93{col 56}{space 3}0.054{col 64}{space 4}-.0008956{col 77}{space 3} .0938885
+{txt}{space 7}depto_uso_compu {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_uso_internet {c |}{col 24}{res}{space 2}-.0849532{col 36}{space 2} .0630073{col 47}{space 1}   -1.35{col 56}{space 3}0.179{col 64}{space 4}-.2091411{col 77}{space 3} .0392347
+{txt}{space 5}depto_jefe_hombre {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 7}depto_jefe_edad {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_jefe_anciano {c |}{col 24}{res}{space 2} .1533321{col 36}{space 2} .0323551{col 47}{space 1}    4.74{col 56}{space 3}0.000{col 64}{space 4}   .08956{col 77}{space 3} .2171042
+{txt}{space 5}depto_jefe_adulto {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 3}depto_jefe_indigena {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+depto_jefe_materna_esp {c |}{col 24}{res}{space 2}-.1508474{col 36}{space 2} .0458165{col 47}{space 1}   -3.29{col 56}{space 3}0.001{col 64}{space 4}-.2411521{col 77}{space 3}-.0605426
+{txt}{space 1}depto_jefe_menos_prim {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 3}depto_jefe_primaria {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 1}depto_jefe_secundaria {c |}{col 24}{res}{space 2}-.0727045{col 36}{space 2} .0480465{col 47}{space 1}   -1.51{col 56}{space 3}0.132{col 64}{space 4}-.1674045{col 77}{space 3} .0219955
+{txt}{space 3}depto_jefe_edu_priv {c |}{col 24}{res}{space 2} .0200444{col 36}{space 2} .0214151{col 47}{space 1}    0.94{col 56}{space 3}0.350{col 64}{space 4}-.0221649{col 77}{space 3} .0622538
+{txt}{space 3}depto_jefe_alfabeto {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 1}depto_jefe_cuentaprop {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 1}depto_jefe_asalariado {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}depto_jefe_ocupa {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 8}depto_jefe_pea {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 8}depto_jefe_pei {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 5}depto_jefe_casado {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 8}depto_p_hombre {c |}{col 24}{res}{space 2} .0505378{col 36}{space 2} .0318804{col 47}{space 1}    1.59{col 56}{space 3}0.114{col 64}{space 4}-.0122986{col 77}{space 3} .1133742
+{txt}{space 7}depto_p_menor15 {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 8}depto_p_adulto {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}depto_p_indigena {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 3}depto_p_materna_esp {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}depto_edad_hogar {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 3}depto_p_dependencia {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_p_menos_prim {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 6}depto_p_primaria {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_p_secundaria {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 8}depto_p_asiste {c |}{col 24}{res}{space 2} .0013752{col 36}{space 2} .0273286{col 47}{space 1}    0.05{col 56}{space 3}0.960{col 64}{space 4}-.0524896{col 77}{space 3}   .05524
+{txt}{space 6}depto_p_alfabeto {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_p_cuentaprop {c |}{col 24}{res}{space 2}  .094494{col 36}{space 2} .0236053{col 47}{space 1}    4.00{col 56}{space 3}0.000{col 64}{space 4} .0479677{col 77}{space 3} .1410204
+{txt}{space 4}depto_p_asalariado {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 9}depto_p_ocupa {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 11}depto_p_pea {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 11}depto_p_pei {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 8}depto_p_casado {c |}{col 24}{res}{space 2}-.1166599{col 36}{space 2} .0295259{col 47}{space 1}   -3.95{col 56}{space 3}0.000{col 64}{space 4}-.1748557{col 77}{space 3} -.058464
+{txt}{space 2}depto_ln_tot_cuartos {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_ln_tot_dorms {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_ln_tot_migra {c |}{col 24}{res}{space 2} .0313812{col 36}{space 2} .0382083{col 47}{space 1}    0.82{col 56}{space 3}0.412{col 64}{space 4}-.0439277{col 77}{space 3} .1066901
+{txt}{space 1}depto_ln_tot_miembros {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 3}depto_ln_edad_hogar {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 4}depto_ln_jefe_edad {c |}{col 24}{res}{space 2}        0{col 36}{txt}  (omitted)
+{space 17}_cons {c |}{col 24}{res}{space 2}  .584114{col 36}{space 2} .0069166{col 47}{space 1}   84.45{col 56}{space 3}0.000{col 64}{space 4} .5704813{col 77}{space 3} .5977468
+{txt}{hline 23}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}r; t=0.36 12:19:26
+
+{com}.         local vars_no_cero ""
+{txt}r; t=0.00 12:19:26
+
+{com}.         foreach var of varlist `vars' {c -(}
+{txt}  2{com}.                 // Verificar si el coeficiente no es cero
+.                 if _b[`var'] != 0 {c -(}
+{txt}  3{com}.                         local vars_no_cero "`vars_no_cero' `var'"
+{txt}  4{com}.                 {c )-}
+{txt}  5{com}.         {c )-}
+{txt}r; t=0.00 12:19:26
+
+{com}. 
+.         //Mostrar covariables con coeficientes diferentes de cero
+.         glo vars_no_cero `vars_no_cero'
+{txt}r; t=0.00 12:19:26
+
+{com}.         macro list       vars_no_cero
+{txt}{p 0 16}
+vars_no_cero:{space 3}{res}{res}mun_radio mun_tv mun_tvcable mun_refri mun_tanque_agua mun_lavadora mun_compu mun_internet mun_agua_caliente mun_moto mun_carro mun_urban mun_agua_tub mun_inodoro mun_bano_priv mun_drenaje mun_electricidad mun_basura_rec mun_cocina mun_gas mun_pared_adec mun_techo_adec mun_piso_adec mun_uso_celular mun_uso_compu mun_uso_internet mun_jefe_hombre mun_jefe_edad mun_jefe_anciano mun_jefe_adulto mun_jefe_indigena mun_jefe_materna_esp mun_jefe_menos_prim mun_jefe_primaria mun_jefe_edu_priv mun_jefe_alfabeto mun_jefe_cuentaprop mun_jefe_asalariado mun_jefe_ocupa mun_jefe_pea mun_jefe_pei mun_jefe_casado mun_p_hombre mun_p_menor15 mun_p_adulto mun_p_indigena mun_p_materna_esp mun_edad_hogar mun_p_menos_prim mun_p_primaria mun_p_asiste mun_p_alfabeto mun_p_cuentaprop mun_p_asalariado mun_p_ocupa mun_p_pea mun_p_pei mun_p_casado mun_ln_tot_cuartos mun_ln_tot_dorms mun_ln_tot_migra mun_ln_tot_miembros mun_ln_edad_hogar mun_ln_jefe_edad depto_tvcable depto_tanque_agua depto_agua_caliente depto_moto depto_carro depto_urban depto_agua_tub depto_bano_priv depto_drenaje depto_cocina depto_uso_celular depto_uso_internet depto_jefe_anciano depto_jefe_materna_esp depto_jefe_secundaria depto_jefe_edu_priv depto_p_hombre depto_p_asiste depto_p_cuentaprop depto_p_casado depto_ln_tot_migra
+{p_end}
+{txt}r; t=0.00 12:19:26
+
+{com}.         di `: list sizeof global( vars_no_cero)' 
+{res}85
+{txt}r; t=0.00 12:19:26
+
+{com}.         
+.         // Ver modelo con covariables vars_no_cero
+.         fhsae dir_mean $vars_no_cero, revar(dir_var) method(fh) 
+{txt}======================================================================================
+{res}Fay-Herriot Small Area Estimation
+{txt}======================================================================================
+{res}{txt}{hline 23}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}              dir_mean{col 24}{c |} Coefficient{col 36}  Std. err.{col 48}      z{col 56}   P>|z|{col 64}     [95% con{col 77}f. interval]
+{hline 23}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 13}mun_radio {c |}{col 24}{res}{space 2}-.0094677{col 36}{space 2} .0205402{col 47}{space 1}   -0.46{col 56}{space 3}0.645{col 64}{space 4}-.0497257{col 77}{space 3} .0307903
+{txt}{space 16}mun_tv {c |}{col 24}{res}{space 2}-.0517088{col 36}{space 2} .0485537{col 47}{space 1}   -1.06{col 56}{space 3}0.287{col 64}{space 4}-.1468722{col 77}{space 3} .0434547
+{txt}{space 11}mun_tvcable {c |}{col 24}{res}{space 2} -.033363{col 36}{space 2} .0236027{col 47}{space 1}   -1.41{col 56}{space 3}0.158{col 64}{space 4}-.0796234{col 77}{space 3} .0128973
+{txt}{space 13}mun_refri {c |}{col 24}{res}{space 2} .0429463{col 36}{space 2} .0444793{col 47}{space 1}    0.97{col 56}{space 3}0.334{col 64}{space 4}-.0442315{col 77}{space 3} .1301242
+{txt}{space 7}mun_tanque_agua {c |}{col 24}{res}{space 2}-.0102742{col 36}{space 2} .0119968{col 47}{space 1}   -0.86{col 56}{space 3}0.392{col 64}{space 4}-.0337874{col 77}{space 3}  .013239
+{txt}{space 10}mun_lavadora {c |}{col 24}{res}{space 2}-.0325182{col 36}{space 2} .0317789{col 47}{space 1}   -1.02{col 56}{space 3}0.306{col 64}{space 4}-.0948037{col 77}{space 3} .0297674
+{txt}{space 13}mun_compu {c |}{col 24}{res}{space 2}-.0831118{col 36}{space 2} .0615141{col 47}{space 1}   -1.35{col 56}{space 3}0.177{col 64}{space 4}-.2036773{col 77}{space 3} .0374536
+{txt}{space 10}mun_internet {c |}{col 24}{res}{space 2} .0281812{col 36}{space 2} .0330765{col 47}{space 1}    0.85{col 56}{space 3}0.394{col 64}{space 4}-.0366477{col 77}{space 3}   .09301
+{txt}{space 5}mun_agua_caliente {c |}{col 24}{res}{space 2}-.0277081{col 36}{space 2} .0188453{col 47}{space 1}   -1.47{col 56}{space 3}0.141{col 64}{space 4}-.0646442{col 77}{space 3}  .009228
+{txt}{space 14}mun_moto {c |}{col 24}{res}{space 2}  -.01782{col 36}{space 2}  .018098{col 47}{space 1}   -0.98{col 56}{space 3}0.325{col 64}{space 4}-.0532913{col 77}{space 3} .0176514
+{txt}{space 13}mun_carro {c |}{col 24}{res}{space 2}-.0596909{col 36}{space 2} .0265801{col 47}{space 1}   -2.25{col 56}{space 3}0.025{col 64}{space 4}-.1117869{col 77}{space 3}-.0075949
+{txt}{space 13}mun_urban {c |}{col 24}{res}{space 2} .0353802{col 36}{space 2} .0137415{col 47}{space 1}    2.57{col 56}{space 3}0.010{col 64}{space 4} .0084474{col 77}{space 3}  .062313
+{txt}{space 10}mun_agua_tub {c |}{col 24}{res}{space 2}-.0174521{col 36}{space 2} .0116084{col 47}{space 1}   -1.50{col 56}{space 3}0.133{col 64}{space 4}-.0402042{col 77}{space 3}    .0053
+{txt}{space 11}mun_inodoro {c |}{col 24}{res}{space 2} .0717471{col 36}{space 2} .0278402{col 47}{space 1}    2.58{col 56}{space 3}0.010{col 64}{space 4} .0171813{col 77}{space 3} .1263128
+{txt}{space 9}mun_bano_priv {c |}{col 24}{res}{space 2}-.0132473{col 36}{space 2} .0173644{col 47}{space 1}   -0.76{col 56}{space 3}0.446{col 64}{space 4}-.0472809{col 77}{space 3} .0207863
+{txt}{space 11}mun_drenaje {c |}{col 24}{res}{space 2}-.0405468{col 36}{space 2} .0237986{col 47}{space 1}   -1.70{col 56}{space 3}0.088{col 64}{space 4}-.0871912{col 77}{space 3} .0060977
+{txt}{space 6}mun_electricidad {c |}{col 24}{res}{space 2}-.0475296{col 36}{space 2} .0241348{col 47}{space 1}   -1.97{col 56}{space 3}0.049{col 64}{space 4}-.0948329{col 77}{space 3}-.0002264
+{txt}{space 8}mun_basura_rec {c |}{col 24}{res}{space 2} .0060363{col 36}{space 2} .0175218{col 47}{space 1}    0.34{col 56}{space 3}0.730{col 64}{space 4}-.0283059{col 77}{space 3} .0403785
+{txt}{space 12}mun_cocina {c |}{col 24}{res}{space 2} .0178781{col 36}{space 2} .0118099{col 47}{space 1}    1.51{col 56}{space 3}0.130{col 64}{space 4}-.0052689{col 77}{space 3} .0410251
+{txt}{space 15}mun_gas {c |}{col 24}{res}{space 2} .0121978{col 36}{space 2}  .041284{col 47}{space 1}    0.30{col 56}{space 3}0.768{col 64}{space 4}-.0687173{col 77}{space 3}  .093113
+{txt}{space 8}mun_pared_adec {c |}{col 24}{res}{space 2}-.0041364{col 36}{space 2} .0201248{col 47}{space 1}   -0.21{col 56}{space 3}0.837{col 64}{space 4}-.0435802{col 77}{space 3} .0353075
+{txt}{space 8}mun_techo_adec {c |}{col 24}{res}{space 2} .0497428{col 36}{space 2} .0225635{col 47}{space 1}    2.20{col 56}{space 3}0.027{col 64}{space 4} .0055192{col 77}{space 3} .0939663
+{txt}{space 9}mun_piso_adec {c |}{col 24}{res}{space 2} .0221055{col 36}{space 2} .0305272{col 47}{space 1}    0.72{col 56}{space 3}0.469{col 64}{space 4}-.0377266{col 77}{space 3} .0819376
+{txt}{space 7}mun_uso_celular {c |}{col 24}{res}{space 2}-.0110202{col 36}{space 2} .0190662{col 47}{space 1}   -0.58{col 56}{space 3}0.563{col 64}{space 4}-.0483894{col 77}{space 3} .0263489
+{txt}{space 9}mun_uso_compu {c |}{col 24}{res}{space 2} .0889071{col 36}{space 2} .0648136{col 47}{space 1}    1.37{col 56}{space 3}0.170{col 64}{space 4}-.0381252{col 77}{space 3} .2159394
+{txt}{space 6}mun_uso_internet {c |}{col 24}{res}{space 2} .0622474{col 36}{space 2} .0271651{col 47}{space 1}    2.29{col 56}{space 3}0.022{col 64}{space 4} .0090048{col 77}{space 3}   .11549
+{txt}{space 7}mun_jefe_hombre {c |}{col 24}{res}{space 2} .0296716{col 36}{space 2} .0210883{col 47}{space 1}    1.41{col 56}{space 3}0.159{col 64}{space 4}-.0116608{col 77}{space 3} .0710039
+{txt}{space 9}mun_jefe_edad {c |}{col 24}{res}{space 2} .4549688{col 36}{space 2} .3789452{col 47}{space 1}    1.20{col 56}{space 3}0.230{col 64}{space 4}  -.28775{col 77}{space 3} 1.197688
+{txt}{space 6}mun_jefe_anciano {c |}{col 24}{res}{space 2} 2.465069{col 36}{space 2} 1.382573{col 47}{space 1}    1.78{col 56}{space 3}0.075{col 64}{space 4}-.2447233{col 77}{space 3} 5.174862
+{txt}{space 7}mun_jefe_adulto {c |}{col 24}{res}{space 2} 2.697207{col 36}{space 2} 1.379804{col 47}{space 1}    1.95{col 56}{space 3}0.051{col 64}{space 4} -.007159{col 77}{space 3} 5.401574
+{txt}{space 5}mun_jefe_indigena {c |}{col 24}{res}{space 2}-.2321652{col 36}{space 2} .4097253{col 47}{space 1}   -0.57{col 56}{space 3}0.571{col 64}{space 4}-1.035212{col 77}{space 3} .5708817
+{txt}{space 2}mun_jefe_materna_esp {c |}{col 24}{res}{space 2} .1053101{col 36}{space 2} .1082862{col 47}{space 1}    0.97{col 56}{space 3}0.331{col 64}{space 4}-.1069269{col 77}{space 3}  .317547
+{txt}{space 3}mun_jefe_menos_prim {c |}{col 24}{res}{space 2} .3553158{col 36}{space 2}  .182412{col 47}{space 1}    1.95{col 56}{space 3}0.051{col 64}{space 4}-.0022052{col 77}{space 3} .7128368
+{txt}{space 5}mun_jefe_primaria {c |}{col 24}{res}{space 2} .3113203{col 36}{space 2} .1228906{col 47}{space 1}    2.53{col 56}{space 3}0.011{col 64}{space 4} .0704591{col 77}{space 3} .5521816
+{txt}{space 5}mun_jefe_edu_priv {c |}{col 24}{res}{space 2}-.0050164{col 36}{space 2} .0096362{col 47}{space 1}   -0.52{col 56}{space 3}0.603{col 64}{space 4}-.0239029{col 77}{space 3} .0138701
+{txt}{space 5}mun_jefe_alfabeto {c |}{col 24}{res}{space 2}-.0989896{col 36}{space 2} .0879609{col 47}{space 1}   -1.13{col 56}{space 3}0.260{col 64}{space 4}-.2713899{col 77}{space 3} .0734106
+{txt}{space 3}mun_jefe_cuentaprop {c |}{col 24}{res}{space 2}  .096635{col 36}{space 2} .0624029{col 47}{space 1}    1.55{col 56}{space 3}0.121{col 64}{space 4}-.0256725{col 77}{space 3} .2189425
+{txt}{space 3}mun_jefe_asalariado {c |}{col 24}{res}{space 2} .2643095{col 36}{space 2} .0775927{col 47}{space 1}    3.41{col 56}{space 3}0.001{col 64}{space 4} .1122307{col 77}{space 3} .4163884
+{txt}{space 8}mun_jefe_ocupa {c |}{col 24}{res}{space 2}-.7046864{col 36}{space 2} .2768486{col 47}{space 1}   -2.55{col 56}{space 3}0.011{col 64}{space 4}  -1.2473{col 77}{space 3}-.1620731
+{txt}{space 10}mun_jefe_pea {c |}{col 24}{res}{space 2} .4275137{col 36}{space 2}  .481018{col 47}{space 1}    0.89{col 56}{space 3}0.374{col 64}{space 4}-.5152643{col 77}{space 3} 1.370292
+{txt}{space 10}mun_jefe_pei {c |}{col 24}{res}{space 2} -.087647{col 36}{space 2} .3922146{col 47}{space 1}   -0.22{col 56}{space 3}0.823{col 64}{space 4}-.8563736{col 77}{space 3} .6810795
+{txt}{space 7}mun_jefe_casado {c |}{col 24}{res}{space 2} .0292094{col 36}{space 2} .0685338{col 47}{space 1}    0.43{col 56}{space 3}0.670{col 64}{space 4}-.1051143{col 77}{space 3} .1635332
+{txt}{space 10}mun_p_hombre {c |}{col 24}{res}{space 2}-.0516909{col 36}{space 2} .0229019{col 47}{space 1}   -2.26{col 56}{space 3}0.024{col 64}{space 4}-.0965779{col 77}{space 3} -.006804
+{txt}{space 9}mun_p_menor15 {c |}{col 24}{res}{space 2}-.5269989{col 36}{space 2} .2451816{col 47}{space 1}   -2.15{col 56}{space 3}0.032{col 64}{space 4}-1.007546{col 77}{space 3}-.0464517
+{txt}{space 10}mun_p_adulto {c |}{col 24}{res}{space 2}-.3697122{col 36}{space 2} .1579339{col 47}{space 1}   -2.34{col 56}{space 3}0.019{col 64}{space 4} -.679257{col 77}{space 3}-.0601675
+{txt}{space 8}mun_p_indigena {c |}{col 24}{res}{space 2} .2550227{col 36}{space 2} .4098679{col 47}{space 1}    0.62{col 56}{space 3}0.534{col 64}{space 4}-.5483036{col 77}{space 3} 1.058349
+{txt}{space 5}mun_p_materna_esp {c |}{col 24}{res}{space 2}-.0348748{col 36}{space 2} .1080505{col 47}{space 1}   -0.32{col 56}{space 3}0.747{col 64}{space 4}-.2466499{col 77}{space 3} .1769003
+{txt}{space 8}mun_edad_hogar {c |}{col 24}{res}{space 2}-.2400378{col 36}{space 2}  .285856{col 47}{space 1}   -0.84{col 56}{space 3}0.401{col 64}{space 4}-.8003053{col 77}{space 3} .3202297
+{txt}{space 6}mun_p_menos_prim {c |}{col 24}{res}{space 2} -.308887{col 36}{space 2} .1591566{col 47}{space 1}   -1.94{col 56}{space 3}0.052{col 64}{space 4}-.6208283{col 77}{space 3} .0030542
+{txt}{space 8}mun_p_primaria {c |}{col 24}{res}{space 2}-.2128032{col 36}{space 2} .0966442{col 47}{space 1}   -2.20{col 56}{space 3}0.028{col 64}{space 4}-.4022222{col 77}{space 3}-.0233841
+{txt}{space 10}mun_p_asiste {c |}{col 24}{res}{space 2}-.0373492{col 36}{space 2} .0216013{col 47}{space 1}   -1.73{col 56}{space 3}0.084{col 64}{space 4}-.0796869{col 77}{space 3} .0049885
+{txt}{space 8}mun_p_alfabeto {c |}{col 24}{res}{space 2}  .101234{col 36}{space 2} .0960774{col 47}{space 1}    1.05{col 56}{space 3}0.292{col 64}{space 4}-.0870743{col 77}{space 3} .2895423
+{txt}{space 6}mun_p_cuentaprop {c |}{col 24}{res}{space 2}-.0700588{col 36}{space 2} .0599757{col 47}{space 1}   -1.17{col 56}{space 3}0.243{col 64}{space 4}-.1876089{col 77}{space 3} .0474914
+{txt}{space 6}mun_p_asalariado {c |}{col 24}{res}{space 2}-.2780706{col 36}{space 2} .0950489{col 47}{space 1}   -2.93{col 56}{space 3}0.003{col 64}{space 4}-.4643631{col 77}{space 3}-.0917781
+{txt}{space 11}mun_p_ocupa {c |}{col 24}{res}{space 2} .9671273{col 36}{space 2} .3239489{col 47}{space 1}    2.99{col 56}{space 3}0.003{col 64}{space 4} .3321993{col 77}{space 3} 1.602055
+{txt}{space 13}mun_p_pea {c |}{col 24}{res}{space 2}-.7879933{col 36}{space 2} .3758342{col 47}{space 1}   -2.10{col 56}{space 3}0.036{col 64}{space 4}-1.524615{col 77}{space 3}-.0513718
+{txt}{space 13}mun_p_pei {c |}{col 24}{res}{space 2}-.0149154{col 36}{space 2} .1918094{col 47}{space 1}   -0.08{col 56}{space 3}0.938{col 64}{space 4} -.390855{col 77}{space 3} .3610242
+{txt}{space 10}mun_p_casado {c |}{col 24}{res}{space 2}-.0167822{col 36}{space 2} .0712771{col 47}{space 1}   -0.24{col 56}{space 3}0.814{col 64}{space 4}-.1564828{col 77}{space 3} .1229184
+{txt}{space 4}mun_ln_tot_cuartos {c |}{col 24}{res}{space 2} -.002933{col 36}{space 2}  .021968{col 47}{space 1}   -0.13{col 56}{space 3}0.894{col 64}{space 4}-.0459895{col 77}{space 3} .0401234
+{txt}{space 6}mun_ln_tot_dorms {c |}{col 24}{res}{space 2} .0197311{col 36}{space 2} .0273496{col 47}{space 1}    0.72{col 56}{space 3}0.471{col 64}{space 4}-.0338731{col 77}{space 3} .0733354
+{txt}{space 6}mun_ln_tot_migra {c |}{col 24}{res}{space 2}-.0091178{col 36}{space 2} .0105486{col 47}{space 1}   -0.86{col 56}{space 3}0.387{col 64}{space 4}-.0297927{col 77}{space 3}  .011557
+{txt}{space 3}mun_ln_tot_miembros {c |}{col 24}{res}{space 2} .0755544{col 36}{space 2} .0628652{col 47}{space 1}    1.20{col 56}{space 3}0.229{col 64}{space 4}-.0476592{col 77}{space 3} .1987679
+{txt}{space 5}mun_ln_edad_hogar {c |}{col 24}{res}{space 2}-.0787129{col 36}{space 2} .2477953{col 47}{space 1}   -0.32{col 56}{space 3}0.751{col 64}{space 4}-.5643828{col 77}{space 3}  .406957
+{txt}{space 6}mun_ln_jefe_edad {c |}{col 24}{res}{space 2}-.2383757{col 36}{space 2} .3174286{col 47}{space 1}   -0.75{col 56}{space 3}0.453{col 64}{space 4}-.8605243{col 77}{space 3} .3837729
+{txt}{space 9}depto_tvcable {c |}{col 24}{res}{space 2} .0461059{col 36}{space 2} .0782469{col 47}{space 1}    0.59{col 56}{space 3}0.556{col 64}{space 4}-.1072553{col 77}{space 3} .1994671
+{txt}{space 5}depto_tanque_agua {c |}{col 24}{res}{space 2}-.0165178{col 36}{space 2} .0208871{col 47}{space 1}   -0.79{col 56}{space 3}0.429{col 64}{space 4}-.0574559{col 77}{space 3} .0244202
+{txt}{space 3}depto_agua_caliente {c |}{col 24}{res}{space 2} .0502786{col 36}{space 2} .0523043{col 47}{space 1}    0.96{col 56}{space 3}0.336{col 64}{space 4} -.052236{col 77}{space 3} .1527932
+{txt}{space 12}depto_moto {c |}{col 24}{res}{space 2} .0131799{col 36}{space 2} .0351729{col 47}{space 1}    0.37{col 56}{space 3}0.708{col 64}{space 4}-.0557577{col 77}{space 3} .0821175
+{txt}{space 11}depto_carro {c |}{col 24}{res}{space 2} .0027194{col 36}{space 2} .0770965{col 47}{space 1}    0.04{col 56}{space 3}0.972{col 64}{space 4} -.148387{col 77}{space 3} .1538259
+{txt}{space 11}depto_urban {c |}{col 24}{res}{space 2} .0194875{col 36}{space 2} .0433912{col 47}{space 1}    0.45{col 56}{space 3}0.653{col 64}{space 4}-.0655576{col 77}{space 3} .1045326
+{txt}{space 8}depto_agua_tub {c |}{col 24}{res}{space 2}-.0515198{col 36}{space 2} .0348366{col 47}{space 1}   -1.48{col 56}{space 3}0.139{col 64}{space 4}-.1197983{col 77}{space 3} .0167587
+{txt}{space 7}depto_bano_priv {c |}{col 24}{res}{space 2}-.0929339{col 36}{space 2} .0307728{col 47}{space 1}   -3.02{col 56}{space 3}0.003{col 64}{space 4}-.1532476{col 77}{space 3}-.0326203
+{txt}{space 9}depto_drenaje {c |}{col 24}{res}{space 2} .0658654{col 36}{space 2} .0401453{col 47}{space 1}    1.64{col 56}{space 3}0.101{col 64}{space 4}-.0128179{col 77}{space 3} .1445487
+{txt}{space 10}depto_cocina {c |}{col 24}{res}{space 2} .0531994{col 36}{space 2} .0231907{col 47}{space 1}    2.29{col 56}{space 3}0.022{col 64}{space 4} .0077465{col 77}{space 3} .0986524
+{txt}{space 5}depto_uso_celular {c |}{col 24}{res}{space 2} .0437292{col 36}{space 2}  .023963{col 47}{space 1}    1.82{col 56}{space 3}0.068{col 64}{space 4}-.0032374{col 77}{space 3} .0906959
+{txt}{space 4}depto_uso_internet {c |}{col 24}{res}{space 2}-.0536479{col 36}{space 2} .0632625{col 47}{space 1}   -0.85{col 56}{space 3}0.396{col 64}{space 4}  -.17764{col 77}{space 3} .0703443
+{txt}{space 4}depto_jefe_anciano {c |}{col 24}{res}{space 2} .1668239{col 36}{space 2} .0325537{col 47}{space 1}    5.12{col 56}{space 3}0.000{col 64}{space 4} .1030198{col 77}{space 3}  .230628
+{txt}depto_jefe_materna_esp {c |}{col 24}{res}{space 2} -.184107{col 36}{space 2} .0447401{col 47}{space 1}   -4.12{col 56}{space 3}0.000{col 64}{space 4} -.271796{col 77}{space 3}-.0964181
+{txt}{space 1}depto_jefe_secundaria {c |}{col 24}{res}{space 2}-.0899868{col 36}{space 2} .0475826{col 47}{space 1}   -1.89{col 56}{space 3}0.059{col 64}{space 4}-.1832469{col 77}{space 3} .0032734
+{txt}{space 3}depto_jefe_edu_priv {c |}{col 24}{res}{space 2} .0189687{col 36}{space 2} .0208084{col 47}{space 1}    0.91{col 56}{space 3}0.362{col 64}{space 4}-.0218151{col 77}{space 3} .0597525
+{txt}{space 8}depto_p_hombre {c |}{col 24}{res}{space 2} .0596533{col 36}{space 2} .0321862{col 47}{space 1}    1.85{col 56}{space 3}0.064{col 64}{space 4}-.0034305{col 77}{space 3} .1227372
+{txt}{space 8}depto_p_asiste {c |}{col 24}{res}{space 2} .0001232{col 36}{space 2} .0262346{col 47}{space 1}    0.00{col 56}{space 3}0.996{col 64}{space 4}-.0512956{col 77}{space 3} .0515421
+{txt}{space 4}depto_p_cuentaprop {c |}{col 24}{res}{space 2} .1008987{col 36}{space 2} .0232144{col 47}{space 1}    4.35{col 56}{space 3}0.000{col 64}{space 4} .0553993{col 77}{space 3} .1463981
+{txt}{space 8}depto_p_casado {c |}{col 24}{res}{space 2}-.1101802{col 36}{space 2} .0290146{col 47}{space 1}   -3.80{col 56}{space 3}0.000{col 64}{space 4}-.1670478{col 77}{space 3}-.0533126
+{txt}{space 4}depto_ln_tot_migra {c |}{col 24}{res}{space 2} .0508223{col 36}{space 2} .0378832{col 47}{space 1}    1.34{col 56}{space 3}0.180{col 64}{space 4}-.0234274{col 77}{space 3} .1250719
+{txt}{space 17}_cons {c |}{col 24}{res}{space 2} .5868756{col 36}{space 2} .0066573{col 47}{space 1}   88.16{col 56}{space 3}0.000{col 64}{space 4} .5738276{col 77}{space 3} .5999236
+{txt}{hline 23}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{hline 61}
+{res}FH Model diagnostics
+{txt}{hline 61}
+Number of observations{col 45}={col 50}{res}302
+{txt}Estimated random effects variance{col 45}={col 50}{res}.00749048
+{txt}Log Likelihood{col 45}={col 50}{res}266.8759
+{txt}AIC{col 45}={col 50}{res}-359.75181
+{txt}AICc{col 45}={col 50}{res}-290.15181
+{txt}BIC{col 45}={col 50}{res}-36.944659
+{txt}{hline 61}
+r; t=0.40 12:19:26
+
+{com}. 
+. ********************************************************************************                
+. **# Remover variables no significativas (primer round)
+. ********************************************************************************
+.         
+.         local hhvars $vars_no_cero
+{txt}r; t=0.00 12:19:26
+
+{com}.         //Remover variables no significativas
+.         forval z= 0.8(-0.05)0.05{c -(}
+{txt}  2{com}.                 qui: fhsae dir_mean `hhvars', revar(dir_var) method(fh) nonegative
+{txt}  3{com}.                 mata: bb=st_matrix("e(b)")
+{txt}  4{com}.                 mata: se=sqrt(diagonal(st_matrix("e(V)")))
+{txt}  5{com}.                 mata: zvals = bb':/se
+{txt}  6{com}.                 mata: st_matrix("min",min(abs(zvals)))
+{txt}  7{com}.                 local zv = (-min[1,1])
+{txt}  8{com}.                 if (2*normal(`zv')<`z') exit    
+{txt}  9{com}.                 foreach x of varlist `hhvars'{c -(}
+{txt} 10{com}.                         local hhvars1
+{txt} 11{com}.                         qui: fhsae dir_mean `hhvars', revar(dir_var) method(fh) nonegative
+{txt} 12{com}.                         qui: test `x' 
+{txt} 13{com}.                         if (r(p)>`z'){c -(}
+{txt} 14{com}.                                 local hhvars1
+{txt} 15{com}.                                 foreach yy of local hhvars{c -(}
+{txt} 16{com}.                                         if ("`yy'"=="`x'") dis ""
+{txt} 17{com}.                                         else local hhvars1 `hhvars1' `yy'
+{txt} 18{com}.                                 {c )-}
+{txt} 19{com}.                         {c )-}
+{txt} 20{com}.                         else local hhvars1 `hhvars'
+{txt} 21{com}.                         local hhvars `hhvars1'          
+{txt} 22{com}.                 {c )-}
+{txt} 23{com}.         {c )-}       
+{res}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{txt}r; t=48.63 12:20:15
+
+{com}. 
+.         //Mostrar covariables postsign
+.         global postsign `hhvars'
+{txt}r; t=0.00 12:20:15
+
+{com}.         macro list      postsign
+{txt}{p 0 16}
+postsign:{space 7}{res}{res}mun_tvcable mun_compu mun_moto mun_carro mun_urban mun_agua_tub mun_inodoro mun_drenaje mun_electricidad mun_cocina mun_techo_adec mun_uso_internet mun_jefe_edad mun_jefe_adulto mun_jefe_materna_esp mun_jefe_menos_prim mun_jefe_primaria mun_jefe_cuentaprop mun_jefe_asalariado mun_jefe_ocupa mun_jefe_pea mun_p_hombre mun_p_menor15 mun_p_adulto mun_edad_hogar mun_p_menos_prim mun_p_primaria mun_p_asiste mun_p_asalariado mun_p_ocupa mun_p_pea mun_ln_tot_miembros depto_tvcable depto_agua_tub depto_bano_priv depto_drenaje depto_cocina depto_uso_celular depto_jefe_anciano depto_jefe_materna_esp depto_jefe_secundaria depto_p_hombre depto_p_cuentaprop depto_p_casado depto_ln_tot_migra
+{p_end}
+{txt}r; t=0.00 12:20:15
+
+{com}.         di `: list sizeof global(postsign)'  
+{res}45
+{txt}r; t=0.00 12:20:15
+
+{com}. 
+.         // Ver modelo con covariables postsign
+.         fhsae dir_mean ${c -(}postsign{c )-}, revar(dir_var) method(fh)
+{txt}======================================================================================
+{res}Fay-Herriot Small Area Estimation
+{txt}======================================================================================
+{res}{txt}{hline 23}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}              dir_mean{col 24}{c |} Coefficient{col 36}  Std. err.{col 48}      z{col 56}   P>|z|{col 64}     [95% con{col 77}f. interval]
+{hline 23}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}mun_tvcable {c |}{col 24}{res}{space 2}-.0307284{col 36}{space 2} .0170218{col 47}{space 1}   -1.81{col 56}{space 3}0.071{col 64}{space 4}-.0640905{col 77}{space 3} .0026336
+{txt}{space 13}mun_compu {c |}{col 24}{res}{space 2}-.0437478{col 36}{space 2} .0347072{col 47}{space 1}   -1.26{col 56}{space 3}0.207{col 64}{space 4}-.1117727{col 77}{space 3}  .024277
+{txt}{space 14}mun_moto {c |}{col 24}{res}{space 2}-.0289213{col 36}{space 2} .0127254{col 47}{space 1}   -2.27{col 56}{space 3}0.023{col 64}{space 4}-.0538627{col 77}{space 3}-.0039799
+{txt}{space 13}mun_carro {c |}{col 24}{res}{space 2}-.0836062{col 36}{space 2} .0163047{col 47}{space 1}   -5.13{col 56}{space 3}0.000{col 64}{space 4}-.1155629{col 77}{space 3}-.0516496
+{txt}{space 13}mun_urban {c |}{col 24}{res}{space 2} .0323835{col 36}{space 2} .0119718{col 47}{space 1}    2.70{col 56}{space 3}0.007{col 64}{space 4} .0089192{col 77}{space 3} .0558478
+{txt}{space 10}mun_agua_tub {c |}{col 24}{res}{space 2}-.0210116{col 36}{space 2}   .00892{col 47}{space 1}   -2.36{col 56}{space 3}0.018{col 64}{space 4}-.0384946{col 77}{space 3}-.0035287
+{txt}{space 11}mun_inodoro {c |}{col 24}{res}{space 2} .0719942{col 36}{space 2} .0221481{col 47}{space 1}    3.25{col 56}{space 3}0.001{col 64}{space 4} .0285848{col 77}{space 3} .1154037
+{txt}{space 11}mun_drenaje {c |}{col 24}{res}{space 2} -.045228{col 36}{space 2} .0193372{col 47}{space 1}   -2.34{col 56}{space 3}0.019{col 64}{space 4}-.0831282{col 77}{space 3}-.0073278
+{txt}{space 6}mun_electricidad {c |}{col 24}{res}{space 2}-.0581668{col 36}{space 2} .0147361{col 47}{space 1}   -3.95{col 56}{space 3}0.000{col 64}{space 4}-.0870491{col 77}{space 3}-.0292846
+{txt}{space 12}mun_cocina {c |}{col 24}{res}{space 2}  .019492{col 36}{space 2} .0092618{col 47}{space 1}    2.10{col 56}{space 3}0.035{col 64}{space 4} .0013393{col 77}{space 3} .0376448
+{txt}{space 8}mun_techo_adec {c |}{col 24}{res}{space 2} .0456502{col 36}{space 2} .0174752{col 47}{space 1}    2.61{col 56}{space 3}0.009{col 64}{space 4} .0113994{col 77}{space 3}  .079901
+{txt}{space 6}mun_uso_internet {c |}{col 24}{res}{space 2} .0708093{col 36}{space 2} .0204858{col 47}{space 1}    3.46{col 56}{space 3}0.001{col 64}{space 4} .0306579{col 77}{space 3} .1109607
+{txt}{space 9}mun_jefe_edad {c |}{col 24}{res}{space 2} .1198862{col 36}{space 2} .0654314{col 47}{space 1}    1.83{col 56}{space 3}0.067{col 64}{space 4} -.008357{col 77}{space 3} .2481295
+{txt}{space 7}mun_jefe_adulto {c |}{col 24}{res}{space 2} .1619277{col 36}{space 2} .0556457{col 47}{space 1}    2.91{col 56}{space 3}0.004{col 64}{space 4} .0528642{col 77}{space 3} .2709913
+{txt}{space 2}mun_jefe_materna_esp {c |}{col 24}{res}{space 2} .0756877{col 36}{space 2} .0175841{col 47}{space 1}    4.30{col 56}{space 3}0.000{col 64}{space 4} .0412236{col 77}{space 3} .1101518
+{txt}{space 3}mun_jefe_menos_prim {c |}{col 24}{res}{space 2} .3142431{col 36}{space 2} .1414497{col 47}{space 1}    2.22{col 56}{space 3}0.026{col 64}{space 4} .0370067{col 77}{space 3} .5914795
+{txt}{space 5}mun_jefe_primaria {c |}{col 24}{res}{space 2}  .272409{col 36}{space 2}  .093326{col 47}{space 1}    2.92{col 56}{space 3}0.004{col 64}{space 4} .0894934{col 77}{space 3} .4553245
+{txt}{space 3}mun_jefe_cuentaprop {c |}{col 24}{res}{space 2} .0282811{col 36}{space 2} .0167645{col 47}{space 1}    1.69{col 56}{space 3}0.092{col 64}{space 4}-.0045767{col 77}{space 3}  .061139
+{txt}{space 3}mun_jefe_asalariado {c |}{col 24}{res}{space 2} .2321072{col 36}{space 2} .0559663{col 47}{space 1}    4.15{col 56}{space 3}0.000{col 64}{space 4} .1224152{col 77}{space 3} .3417992
+{txt}{space 8}mun_jefe_ocupa {c |}{col 24}{res}{space 2}-.8559975{col 36}{space 2} .2308759{col 47}{space 1}   -3.71{col 56}{space 3}0.000{col 64}{space 4}-1.308506{col 77}{space 3} -.403489
+{txt}{space 10}mun_jefe_pea {c |}{col 24}{res}{space 2} .7228231{col 36}{space 2} .2272096{col 47}{space 1}    3.18{col 56}{space 3}0.001{col 64}{space 4} .2775006{col 77}{space 3} 1.168146
+{txt}{space 10}mun_p_hombre {c |}{col 24}{res}{space 2}-.0360999{col 36}{space 2}  .013697{col 47}{space 1}   -2.64{col 56}{space 3}0.008{col 64}{space 4}-.0629455{col 77}{space 3}-.0092543
+{txt}{space 9}mun_p_menor15 {c |}{col 24}{res}{space 2} -.527741{col 36}{space 2}  .186132{col 47}{space 1}   -2.84{col 56}{space 3}0.005{col 64}{space 4}-.8925529{col 77}{space 3} -.162929
+{txt}{space 10}mun_p_adulto {c |}{col 24}{res}{space 2} -.345765{col 36}{space 2} .1054285{col 47}{space 1}   -3.28{col 56}{space 3}0.001{col 64}{space 4} -.552401{col 77}{space 3} -.139129
+{txt}{space 8}mun_edad_hogar {c |}{col 24}{res}{space 2}-.2795803{col 36}{space 2} .1294953{col 47}{space 1}   -2.16{col 56}{space 3}0.031{col 64}{space 4}-.5333864{col 77}{space 3}-.0257742
+{txt}{space 6}mun_p_menos_prim {c |}{col 24}{res}{space 2}-.3601322{col 36}{space 2} .1237378{col 47}{space 1}   -2.91{col 56}{space 3}0.004{col 64}{space 4} -.602654{col 77}{space 3}-.1176105
+{txt}{space 8}mun_p_primaria {c |}{col 24}{res}{space 2}-.2354556{col 36}{space 2} .0728696{col 47}{space 1}   -3.23{col 56}{space 3}0.001{col 64}{space 4}-.3782773{col 77}{space 3}-.0926339
+{txt}{space 10}mun_p_asiste {c |}{col 24}{res}{space 2}-.0375584{col 36}{space 2} .0156953{col 47}{space 1}   -2.39{col 56}{space 3}0.017{col 64}{space 4}-.0683206{col 77}{space 3}-.0067962
+{txt}{space 6}mun_p_asalariado {c |}{col 24}{res}{space 2}-.2223223{col 36}{space 2} .0639928{col 47}{space 1}   -3.47{col 56}{space 3}0.001{col 64}{space 4}-.3477459{col 77}{space 3}-.0968987
+{txt}{space 11}mun_p_ocupa {c |}{col 24}{res}{space 2} 1.053854{col 36}{space 2} .2594989{col 47}{space 1}    4.06{col 56}{space 3}0.000{col 64}{space 4}  .545245{col 77}{space 3} 1.562462
+{txt}{space 13}mun_p_pea {c |}{col 24}{res}{space 2}-.9560234{col 36}{space 2} .2569798{col 47}{space 1}   -3.72{col 56}{space 3}0.000{col 64}{space 4}-1.459695{col 77}{space 3}-.4523523
+{txt}{space 3}mun_ln_tot_miembros {c |}{col 24}{res}{space 2} .1278135{col 36}{space 2} .0398477{col 47}{space 1}    3.21{col 56}{space 3}0.001{col 64}{space 4} .0497134{col 77}{space 3} .2059135
+{txt}{space 9}depto_tvcable {c |}{col 24}{res}{space 2} .0973737{col 36}{space 2} .0322849{col 47}{space 1}    3.02{col 56}{space 3}0.003{col 64}{space 4} .0340964{col 77}{space 3}  .160651
+{txt}{space 8}depto_agua_tub {c |}{col 24}{res}{space 2}-.0550934{col 36}{space 2}  .016522{col 47}{space 1}   -3.33{col 56}{space 3}0.001{col 64}{space 4} -.087476{col 77}{space 3}-.0227109
+{txt}{space 7}depto_bano_priv {c |}{col 24}{res}{space 2}-.0942929{col 36}{space 2} .0213383{col 47}{space 1}   -4.42{col 56}{space 3}0.000{col 64}{space 4}-.1361152{col 77}{space 3}-.0524705
+{txt}{space 9}depto_drenaje {c |}{col 24}{res}{space 2} .0714693{col 36}{space 2} .0271341{col 47}{space 1}    2.63{col 56}{space 3}0.008{col 64}{space 4} .0182874{col 77}{space 3} .1246512
+{txt}{space 10}depto_cocina {c |}{col 24}{res}{space 2} .0697972{col 36}{space 2} .0152719{col 47}{space 1}    4.57{col 56}{space 3}0.000{col 64}{space 4} .0398649{col 77}{space 3} .0997296
+{txt}{space 5}depto_uso_celular {c |}{col 24}{res}{space 2} .0367365{col 36}{space 2} .0114741{col 47}{space 1}    3.20{col 56}{space 3}0.001{col 64}{space 4} .0142476{col 77}{space 3} .0592255
+{txt}{space 4}depto_jefe_anciano {c |}{col 24}{res}{space 2} .1567157{col 36}{space 2} .0208499{col 47}{space 1}    7.52{col 56}{space 3}0.000{col 64}{space 4} .1158506{col 77}{space 3} .1975808
+{txt}depto_jefe_materna_esp {c |}{col 24}{res}{space 2}-.2074703{col 36}{space 2} .0316452{col 47}{space 1}   -6.56{col 56}{space 3}0.000{col 64}{space 4}-.2694938{col 77}{space 3}-.1454469
+{txt}{space 1}depto_jefe_secundaria {c |}{col 24}{res}{space 2} -.107879{col 36}{space 2} .0200659{col 47}{space 1}   -5.38{col 56}{space 3}0.000{col 64}{space 4}-.1472075{col 77}{space 3}-.0685505
+{txt}{space 8}depto_p_hombre {c |}{col 24}{res}{space 2} .0579132{col 36}{space 2}  .019783{col 47}{space 1}    2.93{col 56}{space 3}0.003{col 64}{space 4} .0191393{col 77}{space 3} .0966871
+{txt}{space 4}depto_p_cuentaprop {c |}{col 24}{res}{space 2} .1181157{col 36}{space 2} .0134692{col 47}{space 1}    8.77{col 56}{space 3}0.000{col 64}{space 4} .0917166{col 77}{space 3} .1445148
+{txt}{space 8}depto_p_casado {c |}{col 24}{res}{space 2}-.0940139{col 36}{space 2} .0163884{col 47}{space 1}   -5.74{col 56}{space 3}0.000{col 64}{space 4}-.1261345{col 77}{space 3}-.0618933
+{txt}{space 4}depto_ln_tot_migra {c |}{col 24}{res}{space 2} .0523292{col 36}{space 2} .0208561{col 47}{space 1}    2.51{col 56}{space 3}0.012{col 64}{space 4}  .011452{col 77}{space 3} .0932063
+{txt}{space 17}_cons {c |}{col 24}{res}{space 2} .5859205{col 36}{space 2} .0063261{col 47}{space 1}   92.62{col 56}{space 3}0.000{col 64}{space 4} .5735215{col 77}{space 3} .5983194
+{txt}{hline 23}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{hline 61}
+{res}FH Model diagnostics
+{txt}{hline 61}
+Number of observations{col 45}={col 50}{res}302
+{txt}Estimated random effects variance{col 45}={col 50}{res}.00710218
+{txt}Log Likelihood{col 45}={col 50}{res}251.86661
+{txt}AIC{col 45}={col 50}{res}-409.73322
+{txt}AICc{col 45}={col 50}{res}-392.77636
+{txt}BIC{col 45}={col 50}{res}-235.34315
+{txt}{hline 61}
+r; t=0.03 12:20:15
+
+{com}. 
+. 
+. ********************************************************************************
+. **# Remover variables con VIF>5 
+. ********************************************************************************
+.                         
+.         //Checar VIF
+.         reg dir_mean $postsign, r
+
+{txt}Linear regression                               Number of obs     = {res}       302
+                                                {txt}F(45, 256)        =  {res}    35.99
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.7752
+                                                {txt}Root MSE          =    {res} .11359
+
+{txt}{hline 23}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 24}{c |}{col 36}    Robust
+{col 1}              dir_mean{col 24}{c |} Coefficient{col 36}  std. err.{col 48}      t{col 56}   P>|t|{col 64}     [95% con{col 77}f. interval]
+{hline 23}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}mun_tvcable {c |}{col 24}{res}{space 2}-.0231799{col 36}{space 2} .0178877{col 47}{space 1}   -1.30{col 56}{space 3}0.196{col 64}{space 4}-.0584057{col 77}{space 3} .0120458
+{txt}{space 13}mun_compu {c |}{col 24}{res}{space 2}-.0390476{col 36}{space 2} .0374074{col 47}{space 1}   -1.04{col 56}{space 3}0.298{col 64}{space 4} -.112713{col 77}{space 3} .0346179
+{txt}{space 14}mun_moto {c |}{col 24}{res}{space 2} -.032364{col 36}{space 2} .0130273{col 47}{space 1}   -2.48{col 56}{space 3}0.014{col 64}{space 4}-.0580182{col 77}{space 3}-.0067097
+{txt}{space 13}mun_carro {c |}{col 24}{res}{space 2}-.0786233{col 36}{space 2} .0176735{col 47}{space 1}   -4.45{col 56}{space 3}0.000{col 64}{space 4}-.1134273{col 77}{space 3}-.0438193
+{txt}{space 13}mun_urban {c |}{col 24}{res}{space 2} .0354145{col 36}{space 2} .0128877{col 47}{space 1}    2.75{col 56}{space 3}0.006{col 64}{space 4}  .010035{col 77}{space 3} .0607939
+{txt}{space 10}mun_agua_tub {c |}{col 24}{res}{space 2}-.0124766{col 36}{space 2} .0078413{col 47}{space 1}   -1.59{col 56}{space 3}0.113{col 64}{space 4}-.0279183{col 77}{space 3} .0029652
+{txt}{space 11}mun_inodoro {c |}{col 24}{res}{space 2} .0769535{col 36}{space 2} .0240056{col 47}{space 1}    3.21{col 56}{space 3}0.002{col 64}{space 4} .0296799{col 77}{space 3}  .124227
+{txt}{space 11}mun_drenaje {c |}{col 24}{res}{space 2}-.0541128{col 36}{space 2} .0232202{col 47}{space 1}   -2.33{col 56}{space 3}0.021{col 64}{space 4}-.0998397{col 77}{space 3}-.0083859
+{txt}{space 6}mun_electricidad {c |}{col 24}{res}{space 2}-.0457873{col 36}{space 2} .0157274{col 47}{space 1}   -2.91{col 56}{space 3}0.004{col 64}{space 4}-.0767588{col 77}{space 3}-.0148158
+{txt}{space 12}mun_cocina {c |}{col 24}{res}{space 2}  .021958{col 36}{space 2} .0107008{col 47}{space 1}    2.05{col 56}{space 3}0.041{col 64}{space 4} .0008852{col 77}{space 3} .0430308
+{txt}{space 8}mun_techo_adec {c |}{col 24}{res}{space 2} .0415297{col 36}{space 2} .0193219{col 47}{space 1}    2.15{col 56}{space 3}0.033{col 64}{space 4} .0034796{col 77}{space 3} .0795799
+{txt}{space 6}mun_uso_internet {c |}{col 24}{res}{space 2} .0607595{col 36}{space 2} .0223221{col 47}{space 1}    2.72{col 56}{space 3}0.007{col 64}{space 4} .0168013{col 77}{space 3} .1047178
+{txt}{space 9}mun_jefe_edad {c |}{col 24}{res}{space 2} .0927272{col 36}{space 2} .0706454{col 47}{space 1}    1.31{col 56}{space 3}0.191{col 64}{space 4} -.046393{col 77}{space 3} .2318474
+{txt}{space 7}mun_jefe_adulto {c |}{col 24}{res}{space 2} .1234991{col 36}{space 2} .0629694{col 47}{space 1}    1.96{col 56}{space 3}0.051{col 64}{space 4}-.0005048{col 77}{space 3}  .247503
+{txt}{space 2}mun_jefe_materna_esp {c |}{col 24}{res}{space 2} .0555315{col 36}{space 2} .0205288{col 47}{space 1}    2.71{col 56}{space 3}0.007{col 64}{space 4} .0151047{col 77}{space 3} .0959583
+{txt}{space 3}mun_jefe_menos_prim {c |}{col 24}{res}{space 2} .2081295{col 36}{space 2} .1511948{col 47}{space 1}    1.38{col 56}{space 3}0.170{col 64}{space 4}-.0896144{col 77}{space 3} .5058733
+{txt}{space 5}mun_jefe_primaria {c |}{col 24}{res}{space 2} .2029668{col 36}{space 2} .1030927{col 47}{space 1}    1.97{col 56}{space 3}0.050{col 64}{space 4}-.0000509{col 77}{space 3} .4059845
+{txt}{space 3}mun_jefe_cuentaprop {c |}{col 24}{res}{space 2} .0337177{col 36}{space 2} .0161256{col 47}{space 1}    2.09{col 56}{space 3}0.038{col 64}{space 4} .0019619{col 77}{space 3} .0654735
+{txt}{space 3}mun_jefe_asalariado {c |}{col 24}{res}{space 2} .1936408{col 36}{space 2} .0574138{col 47}{space 1}    3.37{col 56}{space 3}0.001{col 64}{space 4} .0805773{col 77}{space 3} .3067042
+{txt}{space 8}mun_jefe_ocupa {c |}{col 24}{res}{space 2} -.820577{col 36}{space 2} .2255973{col 47}{space 1}   -3.64{col 56}{space 3}0.000{col 64}{space 4} -1.26484{col 77}{space 3}-.3763141
+{txt}{space 10}mun_jefe_pea {c |}{col 24}{res}{space 2} .6933604{col 36}{space 2} .2238181{col 47}{space 1}    3.10{col 56}{space 3}0.002{col 64}{space 4} .2526012{col 77}{space 3}  1.13412
+{txt}{space 10}mun_p_hombre {c |}{col 24}{res}{space 2} -.020649{col 36}{space 2} .0160439{col 47}{space 1}   -1.29{col 56}{space 3}0.199{col 64}{space 4}-.0522438{col 77}{space 3} .0109458
+{txt}{space 9}mun_p_menor15 {c |}{col 24}{res}{space 2}-.4044298{col 36}{space 2} .2083841{col 47}{space 1}   -1.94{col 56}{space 3}0.053{col 64}{space 4}-.8147951{col 77}{space 3} .0059354
+{txt}{space 10}mun_p_adulto {c |}{col 24}{res}{space 2}-.2652193{col 36}{space 2} .1190002{col 47}{space 1}   -2.23{col 56}{space 3}0.027{col 64}{space 4}-.4995633{col 77}{space 3}-.0308754
+{txt}{space 8}mun_edad_hogar {c |}{col 24}{res}{space 2}-.2189755{col 36}{space 2} .1433706{col 47}{space 1}   -1.53{col 56}{space 3}0.128{col 64}{space 4}-.5013115{col 77}{space 3} .0633605
+{txt}{space 6}mun_p_menos_prim {c |}{col 24}{res}{space 2}-.2582851{col 36}{space 2} .1337166{col 47}{space 1}   -1.93{col 56}{space 3}0.055{col 64}{space 4}-.5216097{col 77}{space 3} .0050395
+{txt}{space 8}mun_p_primaria {c |}{col 24}{res}{space 2}-.1854876{col 36}{space 2} .0816631{col 47}{space 1}   -2.27{col 56}{space 3}0.024{col 64}{space 4}-.3463047{col 77}{space 3}-.0246706
+{txt}{space 10}mun_p_asiste {c |}{col 24}{res}{space 2}-.0295646{col 36}{space 2} .0144742{col 47}{space 1}   -2.04{col 56}{space 3}0.042{col 64}{space 4}-.0580683{col 77}{space 3}-.0010608
+{txt}{space 6}mun_p_asalariado {c |}{col 24}{res}{space 2}-.1803661{col 36}{space 2} .0649414{col 47}{space 1}   -2.78{col 56}{space 3}0.006{col 64}{space 4}-.3082534{col 77}{space 3}-.0524787
+{txt}{space 11}mun_p_ocupa {c |}{col 24}{res}{space 2} 1.038673{col 36}{space 2} .2556332{col 47}{space 1}    4.06{col 56}{space 3}0.000{col 64}{space 4} .5352609{col 77}{space 3} 1.542084
+{txt}{space 13}mun_p_pea {c |}{col 24}{res}{space 2}-.9508776{col 36}{space 2} .2538303{col 47}{space 1}   -3.75{col 56}{space 3}0.000{col 64}{space 4}-1.450739{col 77}{space 3}-.4510163
+{txt}{space 3}mun_ln_tot_miembros {c |}{col 24}{res}{space 2} .1225272{col 36}{space 2} .0429821{col 47}{space 1}    2.85{col 56}{space 3}0.005{col 64}{space 4} .0378838{col 77}{space 3} .2071707
+{txt}{space 9}depto_tvcable {c |}{col 24}{res}{space 2} .0750304{col 36}{space 2} .0331921{col 47}{space 1}    2.26{col 56}{space 3}0.025{col 64}{space 4}  .009666{col 77}{space 3} .1403948
+{txt}{space 8}depto_agua_tub {c |}{col 24}{res}{space 2}-.0598638{col 36}{space 2} .0176371{col 47}{space 1}   -3.39{col 56}{space 3}0.001{col 64}{space 4} -.094596{col 77}{space 3}-.0251315
+{txt}{space 7}depto_bano_priv {c |}{col 24}{res}{space 2}-.0956671{col 36}{space 2} .0203689{col 47}{space 1}   -4.70{col 56}{space 3}0.000{col 64}{space 4}-.1357789{col 77}{space 3}-.0555552
+{txt}{space 9}depto_drenaje {c |}{col 24}{res}{space 2} .0876779{col 36}{space 2} .0282233{col 47}{space 1}    3.11{col 56}{space 3}0.002{col 64}{space 4} .0320984{col 77}{space 3} .1432574
+{txt}{space 10}depto_cocina {c |}{col 24}{res}{space 2} .0673421{col 36}{space 2}  .016238{col 47}{space 1}    4.15{col 56}{space 3}0.000{col 64}{space 4} .0353651{col 77}{space 3} .0993192
+{txt}{space 5}depto_uso_celular {c |}{col 24}{res}{space 2} .0300786{col 36}{space 2} .0121852{col 47}{space 1}    2.47{col 56}{space 3}0.014{col 64}{space 4} .0060826{col 77}{space 3} .0540745
+{txt}{space 4}depto_jefe_anciano {c |}{col 24}{res}{space 2} .1568445{col 36}{space 2} .0229779{col 47}{space 1}    6.83{col 56}{space 3}0.000{col 64}{space 4} .1115946{col 77}{space 3} .2020943
+{txt}depto_jefe_materna_esp {c |}{col 24}{res}{space 2}-.1912434{col 36}{space 2} .0311574{col 47}{space 1}   -6.14{col 56}{space 3}0.000{col 64}{space 4}-.2526009{col 77}{space 3}-.1298858
+{txt}{space 1}depto_jefe_secundaria {c |}{col 24}{res}{space 2}-.1119835{col 36}{space 2} .0189186{col 47}{space 1}   -5.92{col 56}{space 3}0.000{col 64}{space 4}-.1492393{col 77}{space 3}-.0747276
+{txt}{space 8}depto_p_hombre {c |}{col 24}{res}{space 2} .0455395{col 36}{space 2}  .021496{col 47}{space 1}    2.12{col 56}{space 3}0.035{col 64}{space 4}  .003208{col 77}{space 3}  .087871
+{txt}{space 4}depto_p_cuentaprop {c |}{col 24}{res}{space 2} .1099317{col 36}{space 2} .0135199{col 47}{space 1}    8.13{col 56}{space 3}0.000{col 64}{space 4} .0833073{col 77}{space 3}  .136556
+{txt}{space 8}depto_p_casado {c |}{col 24}{res}{space 2}-.0969465{col 36}{space 2} .0164924{col 47}{space 1}   -5.88{col 56}{space 3}0.000{col 64}{space 4}-.1294246{col 77}{space 3}-.0644685
+{txt}{space 4}depto_ln_tot_migra {c |}{col 24}{res}{space 2} .0427846{col 36}{space 2}  .019484{col 47}{space 1}    2.20{col 56}{space 3}0.029{col 64}{space 4} .0044153{col 77}{space 3}  .081154
+{txt}{space 17}_cons {c |}{col 24}{res}{space 2} .5838187{col 36}{space 2} .0067729{col 47}{space 1}   86.20{col 56}{space 3}0.000{col 64}{space 4} .5704809{col 77}{space 3} .5971564
+{txt}{hline 23}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}r; t=0.02 12:20:15
+
+{com}.         gen touse = e(sample)
+{txt}r; t=0.00 12:20:15
+
+{com}.         gen weight = 1
+{txt}r; t=0.00 12:20:15
+
+{com}.         mata: ds = _f_stepvif("$postsign","weight",5,"touse") 
+{res}{txt}r; t=0.21 12:20:15
+
+{com}.                         
+.         global postvif `vifvar'
+{txt}r; t=0.00 12:20:15
+
+{com}.         macro list      postvif
+{txt}{p 0 16}
+postvif:{space 8}{res}{res}mun_moto mun_urban mun_agua_tub mun_drenaje mun_electricidad mun_cocina mun_techo_adec mun_uso_internet mun_jefe_edad mun_jefe_cuentaprop mun_jefe_ocupa mun_p_hombre mun_p_primaria mun_p_asiste depto_agua_tub depto_cocina depto_uso_celular depto_jefe_anciano depto_jefe_secundaria depto_p_hombre depto_p_cuentaprop depto_p_casado depto_ln_tot_migra
+{p_end}
+{txt}r; t=0.00 12:20:15
+
+{com}.         di `: list sizeof global(postvif)'  
+{res}23
+{txt}r; t=0.00 12:20:15
+
+{com}. 
+.         //Ver modelo con covariables postvif
+.         fhsae dir_mean ${c -(}postvif{c )-}, revar(dir_var) method(fh)
+{txt}======================================================================================
+{res}Fay-Herriot Small Area Estimation
+{txt}======================================================================================
+{res}{txt}{hline 22}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}             dir_mean{col 23}{c |} Coefficient{col 35}  Std. err.{col 47}      z{col 55}   P>|z|{col 63}     [95% con{col 76}f. interval]
+{hline 22}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 13}mun_moto {c |}{col 23}{res}{space 2}-.0795365{col 35}{space 2} .0128554{col 46}{space 1}   -6.19{col 55}{space 3}0.000{col 63}{space 4}-.1047326{col 76}{space 3}-.0543404
+{txt}{space 12}mun_urban {c |}{col 23}{res}{space 2} .0322156{col 35}{space 2} .0128786{col 46}{space 1}    2.50{col 55}{space 3}0.012{col 63}{space 4}  .006974{col 76}{space 3} .0574572
+{txt}{space 9}mun_agua_tub {c |}{col 23}{res}{space 2}-.0194822{col 35}{space 2} .0106462{col 46}{space 1}   -1.83{col 55}{space 3}0.067{col 63}{space 4}-.0403484{col 76}{space 3}  .001384
+{txt}{space 10}mun_drenaje {c |}{col 23}{res}{space 2} .0244398{col 35}{space 2} .0132507{col 46}{space 1}    1.84{col 55}{space 3}0.065{col 63}{space 4}-.0015311{col 76}{space 3} .0504106
+{txt}{space 5}mun_electricidad {c |}{col 23}{res}{space 2}-.0381078{col 35}{space 2} .0156861{col 46}{space 1}   -2.43{col 55}{space 3}0.015{col 63}{space 4}-.0688519{col 76}{space 3}-.0073637
+{txt}{space 11}mun_cocina {c |}{col 23}{res}{space 2} .0215932{col 35}{space 2} .0111158{col 46}{space 1}    1.94{col 55}{space 3}0.052{col 63}{space 4}-.0001934{col 76}{space 3} .0433798
+{txt}{space 7}mun_techo_adec {c |}{col 23}{res}{space 2}-.0446854{col 35}{space 2} .0152688{col 46}{space 1}   -2.93{col 55}{space 3}0.003{col 63}{space 4}-.0746116{col 76}{space 3}-.0147591
+{txt}{space 5}mun_uso_internet {c |}{col 23}{res}{space 2}-.0081226{col 35}{space 2} .0157984{col 46}{space 1}   -0.51{col 55}{space 3}0.607{col 63}{space 4}-.0390869{col 76}{space 3} .0228418
+{txt}{space 8}mun_jefe_edad {c |}{col 23}{res}{space 2}-.0168957{col 35}{space 2} .0124923{col 46}{space 1}   -1.35{col 55}{space 3}0.176{col 63}{space 4}-.0413802{col 76}{space 3} .0075887
+{txt}{space 2}mun_jefe_cuentaprop {c |}{col 23}{res}{space 2}-.0166907{col 35}{space 2} .0129324{col 46}{space 1}   -1.29{col 55}{space 3}0.197{col 63}{space 4}-.0420378{col 76}{space 3} .0086564
+{txt}{space 7}mun_jefe_ocupa {c |}{col 23}{res}{space 2}-.0036464{col 35}{space 2} .0137217{col 46}{space 1}   -0.27{col 55}{space 3}0.790{col 63}{space 4}-.0305405{col 76}{space 3} .0232477
+{txt}{space 9}mun_p_hombre {c |}{col 23}{res}{space 2}-.0023484{col 35}{space 2} .0136949{col 46}{space 1}   -0.17{col 55}{space 3}0.864{col 63}{space 4}-.0291899{col 76}{space 3}  .024493
+{txt}{space 7}mun_p_primaria {c |}{col 23}{res}{space 2}-.0330502{col 35}{space 2} .0144369{col 46}{space 1}   -2.29{col 55}{space 3}0.022{col 63}{space 4}-.0613461{col 76}{space 3}-.0047544
+{txt}{space 9}mun_p_asiste {c |}{col 23}{res}{space 2} .0069842{col 35}{space 2} .0102038{col 46}{space 1}    0.68{col 55}{space 3}0.494{col 63}{space 4}-.0130149{col 76}{space 3} .0269832
+{txt}{space 7}depto_agua_tub {c |}{col 23}{res}{space 2}-.0070234{col 35}{space 2} .0137636{col 46}{space 1}   -0.51{col 55}{space 3}0.610{col 63}{space 4}-.0339996{col 76}{space 3} .0199528
+{txt}{space 9}depto_cocina {c |}{col 23}{res}{space 2}-.0049215{col 35}{space 2} .0124371{col 46}{space 1}   -0.40{col 55}{space 3}0.692{col 63}{space 4}-.0292978{col 76}{space 3} .0194548
+{txt}{space 4}depto_uso_celular {c |}{col 23}{res}{space 2} .0455331{col 35}{space 2} .0114403{col 46}{space 1}    3.98{col 55}{space 3}0.000{col 63}{space 4} .0231106{col 76}{space 3} .0679556
+{txt}{space 3}depto_jefe_anciano {c |}{col 23}{res}{space 2} .0218888{col 35}{space 2} .0122654{col 46}{space 1}    1.78{col 55}{space 3}0.074{col 63}{space 4}-.0021509{col 76}{space 3} .0459286
+{txt}depto_jefe_secundaria {c |}{col 23}{res}{space 2}-.0973643{col 35}{space 2} .0157767{col 46}{space 1}   -6.17{col 55}{space 3}0.000{col 63}{space 4} -.128286{col 76}{space 3}-.0664426
+{txt}{space 7}depto_p_hombre {c |}{col 23}{res}{space 2} .0310667{col 35}{space 2} .0167141{col 46}{space 1}    1.86{col 55}{space 3}0.063{col 63}{space 4}-.0016924{col 76}{space 3} .0638258
+{txt}{space 3}depto_p_cuentaprop {c |}{col 23}{res}{space 2} .0665096{col 35}{space 2} .0128501{col 46}{space 1}    5.18{col 55}{space 3}0.000{col 63}{space 4} .0413239{col 76}{space 3} .0916954
+{txt}{space 7}depto_p_casado {c |}{col 23}{res}{space 2}-.0044154{col 35}{space 2}  .013318{col 46}{space 1}   -0.33{col 55}{space 3}0.740{col 63}{space 4}-.0305181{col 76}{space 3} .0216873
+{txt}{space 3}depto_ln_tot_migra {c |}{col 23}{res}{space 2} -.010829{col 35}{space 2} .0103135{col 46}{space 1}   -1.05{col 55}{space 3}0.294{col 63}{space 4}-.0310432{col 76}{space 3} .0093851
+{txt}{space 16}_cons {c |}{col 23}{res}{space 2} .5861507{col 35}{space 2} .0079858{col 46}{space 1}   73.40{col 55}{space 3}0.000{col 63}{space 4} .5704989{col 76}{space 3} .6018025
+{txt}{hline 22}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{hline 61}
+{res}FH Model diagnostics
+{txt}{hline 61}
+Number of observations{col 45}={col 50}{res}302
+{txt}Estimated random effects variance{col 45}={col 50}{res}.01375855
+{txt}Log Likelihood{col 45}={col 50}{res}173.8857
+{txt}AIC{col 45}={col 50}{res}-297.7714
+{txt}AICc{col 45}={col 50}{res}-293.43927
+{txt}BIC{col 45}={col 50}{res}-205.01072
+{txt}{hline 61}
+r; t=0.01 12:20:15
+
+{com}.         
+. ********************************************************************************                
+. **# Remover variables no significativas (segundo round)
+. ********************************************************************************
+. 
+.         local hhvars $postvif
+{txt}r; t=0.00 12:20:15
+
+{com}.         //Remover variables no significativas
+.         forval z= 0.8(-0.05)0.0001{c -(}
+{txt}  2{com}.                 qui:fhsae dir_mean `hhvars', revar(dir_var) method(reml) precision(1e-10)
+{txt}  3{com}.                 mata: bb=st_matrix("e(b)")
+{txt}  4{com}.                 mata: se=sqrt(diagonal(st_matrix("e(V)")))
+{txt}  5{com}.                 mata: zvals = bb':/se
+{txt}  6{com}.                 mata: st_matrix("min",min(abs(zvals)))
+{txt}  7{com}.                 local zv = (-min[1,1])
+{txt}  8{com}.                 if (2*normal(`zv')>=`z'){c -(}
+{txt}  9{com}.                         foreach x of varlist `hhvars'{c -(}
+{txt} 10{com}.                                 local hhvars1
+{txt} 11{com}.                                 qui: fhsae dir_mean `hhvars', revar(dir_var) method(reml) precision(1e-10)
+{txt} 12{com}.                                 qui: test `x' 
+{txt} 13{com}.                                 if (r(p)>`z'){c -(}
+{txt} 14{com}.                                         local hhvars1
+{txt} 15{com}.                                         foreach yy of local hhvars{c -(}
+{txt} 16{com}.                                                 if ("`yy'"=="`x'") dis ""
+{txt} 17{com}.                                                 else local hhvars1 `hhvars1' `yy'
+{txt} 18{com}.                                         {c )-}
+{txt} 19{com}.                                 {c )-}
+{txt} 20{com}.                                 else local hhvars1 `hhvars'
+{txt} 21{com}.                                 local hhvars `hhvars1'          
+{txt} 22{com}.                         {c )-}
+{txt} 23{com}.                 {c )-}
+{txt} 24{com}.         {c )-}
+{res}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{txt}r; t=63.97 12:21:19
+
+{com}.         
+.         //Mostrar covariables finales
+.         global last `hhvars'
+{txt}r; t=0.00 12:21:19
+
+{com}.         macro list      last
+{txt}{p 0 16}
+last:{space 11}{res}{res}mun_moto mun_urban mun_electricidad mun_techo_adec mun_p_primaria depto_uso_celular depto_jefe_secundaria depto_p_hombre depto_p_cuentaprop
+{p_end}
+{txt}r; t=0.00 12:21:19
+
+{com}.         di `: list sizeof global(last)'  
+{res}9
+{txt}r; t=0.00 12:21:19
+
+{com}.         
+. ********************************************************************************        
+. **# Obtener estimaciones Fay-Herriot    
+. ********************************************************************************        
+. 
+.         fhsae dir_mean  $last, revar(dir_var) method(chandra) fh(fh_mean) area(fh_area) ///
+>         fhse(fh_se) fhcv(fh_cv) gamma(fh_gamma) out noneg precision(1e-13) 
+{txt}==============================================================================
+{res}Fay-Herriot Model
+{txt}==============================================================================
+
+      Source {c |}       SS           df       MS      Number of obs   ={res}       302
+{txt}{hline 13}{c +}{hline 34}   F(9, 292)       = {res}    51.13
+{txt}       Model {c |} {res} 8.98855955         9  .998728839   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 5.70368738       292  .019533176   {txt}R-squared       ={res}    0.6118
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.5998
+{txt}       Total {c |} {res} 14.6922469       301  .048811452   {txt}Root MSE        =   {res} .13976
+
+{txt}{hline 22}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}             dir_mean{col 23}{c |} Coefficient{col 35}  Std. err.{col 47}      t{col 55}   P>|t|{col 63}     [95% con{col 76}f. interval]
+{hline 22}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 13}mun_moto {c |}{col 23}{res}{space 2}-.0819699{col 35}{space 2} .0104016{col 46}{space 1}   -7.88{col 55}{space 3}0.000{col 63}{space 4}-.1024415{col 76}{space 3}-.0614983
+{txt}{space 12}mun_urban {c |}{col 23}{res}{space 2} .0382406{col 35}{space 2} .0112567{col 46}{space 1}    3.40{col 55}{space 3}0.001{col 63}{space 4}  .016086{col 76}{space 3} .0603951
+{txt}{space 5}mun_electricidad {c |}{col 23}{res}{space 2} -.031444{col 35}{space 2} .0125077{col 46}{space 1}   -2.51{col 55}{space 3}0.012{col 63}{space 4}-.0560606{col 76}{space 3}-.0068274
+{txt}{space 7}mun_techo_adec {c |}{col 23}{res}{space 2}-.0532993{col 35}{space 2} .0123378{col 46}{space 1}   -4.32{col 55}{space 3}0.000{col 63}{space 4}-.0775815{col 76}{space 3} -.029017
+{txt}{space 7}mun_p_primaria {c |}{col 23}{res}{space 2}-.0254793{col 35}{space 2} .0129133{col 46}{space 1}   -1.97{col 55}{space 3}0.049{col 63}{space 4}-.0508942{col 76}{space 3}-.0000643
+{txt}{space 4}depto_uso_celular {c |}{col 23}{res}{space 2}  .042633{col 35}{space 2} .0110017{col 46}{space 1}    3.88{col 55}{space 3}0.000{col 63}{space 4} .0209803{col 76}{space 3} .0642858
+{txt}depto_jefe_secundaria {c |}{col 23}{res}{space 2}-.0930323{col 35}{space 2} .0128353{col 46}{space 1}   -7.25{col 55}{space 3}0.000{col 63}{space 4}-.1182937{col 76}{space 3}-.0677709
+{txt}{space 7}depto_p_hombre {c |}{col 23}{res}{space 2} .0292892{col 35}{space 2}   .01249{col 46}{space 1}    2.35{col 55}{space 3}0.020{col 63}{space 4} .0047075{col 76}{space 3}  .053871
+{txt}{space 3}depto_p_cuentaprop {c |}{col 23}{res}{space 2} .0447475{col 35}{space 2} .0098832{col 46}{space 1}    4.53{col 55}{space 3}0.000{col 63}{space 4} .0252962{col 76}{space 3} .0641988
+{txt}{space 16}_cons {c |}{col 23}{res}{space 2} .5849934{col 35}{space 2} .0080665{col 46}{space 1}   72.52{col 55}{space 3}0.000{col 63}{space 4} .5691176{col 76}{space 3} .6008692
+{txt}{hline 22}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}GLS coefficients
+{txt}{hline 22}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}             dir_mean{col 23}{c |} Coefficient{col 35}  Std. err.{col 47}      z{col 55}   P>|z|{col 63}     [95% con{col 76}f. interval]
+{hline 22}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 13}mun_moto {c |}{col 23}{res}{space 2}-.0800238{col 35}{space 2} .0097702{col 46}{space 1}   -8.19{col 55}{space 3}0.000{col 63}{space 4}-.0991731{col 76}{space 3}-.0608745
+{txt}{space 12}mun_urban {c |}{col 23}{res}{space 2} .0328659{col 35}{space 2} .0104319{col 46}{space 1}    3.15{col 55}{space 3}0.002{col 63}{space 4} .0124199{col 76}{space 3}  .053312
+{txt}{space 5}mun_electricidad {c |}{col 23}{res}{space 2}-.0304631{col 35}{space 2} .0111067{col 46}{space 1}   -2.74{col 55}{space 3}0.006{col 63}{space 4}-.0522317{col 76}{space 3}-.0086944
+{txt}{space 7}mun_techo_adec {c |}{col 23}{res}{space 2}-.0506578{col 35}{space 2} .0113141{col 46}{space 1}   -4.48{col 55}{space 3}0.000{col 63}{space 4} -.072833{col 76}{space 3}-.0284826
+{txt}{space 7}mun_p_primaria {c |}{col 23}{res}{space 2}-.0333237{col 35}{space 2} .0116025{col 46}{space 1}   -2.87{col 55}{space 3}0.004{col 63}{space 4}-.0560642{col 76}{space 3}-.0105832
+{txt}{space 4}depto_uso_celular {c |}{col 23}{res}{space 2} .0433118{col 35}{space 2} .0102543{col 46}{space 1}    4.22{col 55}{space 3}0.000{col 63}{space 4} .0232137{col 76}{space 3} .0634099
+{txt}depto_jefe_secundaria {c |}{col 23}{res}{space 2}-.0891626{col 35}{space 2} .0121269{col 46}{space 1}   -7.35{col 55}{space 3}0.000{col 63}{space 4}-.1129309{col 76}{space 3}-.0653943
+{txt}{space 7}depto_p_hombre {c |}{col 23}{res}{space 2} .0361377{col 35}{space 2} .0117659{col 46}{space 1}    3.07{col 55}{space 3}0.002{col 63}{space 4} .0130769{col 76}{space 3} .0591984
+{txt}{space 3}depto_p_cuentaprop {c |}{col 23}{res}{space 2} .0525376{col 35}{space 2} .0091497{col 46}{space 1}    5.74{col 55}{space 3}0.000{col 63}{space 4} .0346044{col 76}{space 3} .0704708
+{txt}{space 16}_cons {c |}{col 23}{res}{space 2} .5864124{col 35}{space 2} .0075051{col 46}{space 1}   78.14{col 55}{space 3}0.000{col 63}{space 4} .5717027{col 76}{space 3} .6011221
+{txt}{hline 22}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+r; t=0.02 12:21:19
+
+{com}. 
+.         // Exportar Regresion del modelo final
+.         etable, title("Tabla 1: Regresion indicator $indi") ///
+>         mstat(N, label("Number of observations ")) ///
+>         mstat(r2_a, label("Adjusted R-squared")) /// 
+>         mstat(r2, label("R-squared")) ///
+>         mstat(sigma2u, label("")) ///
+>         mstat(F_beta, label("F statistic ")) ///
+>         showstars showstarsnote ///
+>         note("Notas: ") notestyles(font(Calibri, size(10) italic)) ///
+>         export("$res", sheet("tab1_$indi") modify cell(A1))
+{res}
+{smcl}
+{reset}{...}
+{p}Tabla 1: Regresion indicator fgt0{p_end}
+{hline 29}{c -}{hline 7}{c -}{hline 2}
+{space 29} {space 1}dir_mean{space 1}
+{hline 29}{c -}{hline 7}{c -}{hline 2}
+moto (nivel mun){space 13} {space 1}{result:-0.080} {result:**}
+{space 29} {result:(0.010)} {space 2}
+urban (nivel mun){space 12} {space 2}{result:0.033} {result:**}
+{space 29} {result:(0.010)} {space 2}
+electricidad (nivel mun){space 5} {space 1}{result:-0.030} {result:**}
+{space 29} {result:(0.011)} {space 2}
+techo_adec (nivel mun){space 7} {space 1}{result:-0.051} {result:**}
+{space 29} {result:(0.011)} {space 2}
+p_primaria (nivel mun){space 7} {space 1}{result:-0.033} {result:**}
+{space 29} {result:(0.012)} {space 2}
+uso_celular (nivel depto){space 4} {space 2}{result:0.043} {result:**}
+{space 29} {result:(0.010)} {space 2}
+jefe_secundaria (nivel depto) {space 1}{result:-0.089} {result:**}
+{space 29} {result:(0.012)} {space 2}
+p_hombre (nivel depto){space 7} {space 2}{result:0.036} {result:**}
+{space 29} {result:(0.012)} {space 2}
+p_cuentaprop (nivel depto){space 3} {space 2}{result:0.053} {result:**}
+{space 29} {result:(0.009)} {space 2}
+Intercept{space 20} {space 2}{result:0.586} {result:**}
+{space 29} {result:(0.008)} {space 2}
+Number of observations{space 7} {space 4}{result:302} {space 2}
+Adjusted R-squared{space 11} {space 3}{result:0.60} {space 2}
+R-squared{space 20} {space 3}{result:0.61} {space 2}
+sigma2u{space 22} {space 3}{result:0.01} {space 2}
+{hline 29}{c -}{hline 7}{c -}{hline 2}
+{p}{it:** p<.01, * p<.05}{p_end}
+{p}{it:Notas:}{p_end}
+{res}{txt}{p 0 1 2}
+(collection {res:ETable} exported to file {browse "c:/Mapas de pobreza/fgt0/01_Data/output/resultados.xlsx":c:\Mapas de pobreza\fgt0\01_Data\output\resultados.xlsx})
+{p_end}
+r; t=0.28 12:21:19
+
+{com}.         
+.         //Check normal errors
+.         predict xb
+{txt}r; t=0.00 12:21:19
+
+{com}.                 
+.         //Definir efectos del modelo  // debe ser igual a la variable fh_area con el metodo Chandra
+.         gen u_d = fh_mean - xb
+{txt}r; t=0.00 12:21:19
+
+{com}.         lab var u_d "FH area effects"
+{txt}r; t=0.00 12:21:19
+
+{com}.                 
+.         //Definir residuales del modelo 
+.         gen e_d = dir_mean - fh_mean
+{txt}(38 missing values generated)
+r; t=0.00 12:21:19
+
+{com}.         lab var e_d "FH errors"
+{txt}r; t=0.00 12:21:19
+
+{com}.                 
+.         //Fig 1: Fay-Herriot Residual Plots (Histogramas)
+.         histogram u_d, normal graphregion(color(white))  ///
+>                                    leg(off) legend(pos(2) ring(0) col(1)) name("fig1_right_$indi", replace)
+{txt}(bin={res}18{txt}, start={res}-.47817292{txt}, width={res}.04279614{txt})
+{res}{txt}r; t=0.74 12:21:20
+
+{com}.         graph export "$figuras\fig1_left_$indi.png", as(png) replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig1_left_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.12 12:21:20
+
+{com}.                 
+.         histogram e_d, normal graphregion(color(white)) name("fig1_left_$indi", replace)
+{txt}(bin={res}17{txt}, start={res}-.30947003{txt}, width={res}.03403494{txt})
+{res}{txt}r; t=0.30 12:21:20
+
+{com}.         graph export "$figuras\fig1_right_$indi.png", as(png) replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig1_right_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.10 12:21:20
+
+{com}.                 
+.         graph combine fig1_right_$indi fig1_left_$indi, graphregion(color(white)) ///
+>         title("Residuales $indi (Histograma)") col(2) xsize(12)
+{res}{txt}r; t=1.53 12:21:22
+
+{com}.         graph export "$figuras\fig1_$indi.png", as(png) replace width(1400) height(800)
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig1_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.25 12:21:22
+
+{com}.         putexcel set "$res", sheet("fig1_$indi", replace) modify
+{res}{txt}r; t=0.00 12:21:22
+
+{com}.         putexcel A1 = picture("$figuras\fig1_$indi.png")
+{res}{txt}file {bf:c:\Mapas de pobreza\fgt0\01_Data\output\resultados.xlsx} saved
+r; t=0.06 12:21:22
+
+{com}.         
+.         //Fig 2: Fay-Herriot Residual Plots (Q-Q Plot)
+.         qnorm u_d, graphregion(color(white)) name("fig2_right_$indi", replace)
+{res}{txt}r; t=0.45 12:21:23
+
+{com}.         graph export "$figuras\fig2_right_$indi.png", as(png) replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig2_right_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.14 12:21:23
+
+{com}.                 
+.         qnorm e_d, graphregion(color(white)) name("fig2_left_$indi", replace)
+{res}{txt}r; t=0.45 12:21:23
+
+{com}.         graph export "$figuras\fig2_left_$indi.png", as(png) replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig2_left_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.14 12:21:23
+
+{com}.                 
+.         graph combine fig2_right_$indi fig2_left_$indi, graphregion(color(white)) ///
+>         title("Residuales $indi (Q-Q)") col(2) xsize(12)
+{res}{txt}r; t=1.46 12:21:25
+
+{com}.         graph export "$figuras\fig2_$indi.png", as(png) replace width(1400) height(800)
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig2_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.22 12:21:25
+
+{com}.         putexcel set "$res", sheet("fig2_$indi", replace) modify
+{res}{txt}r; t=0.00 12:21:25
+
+{com}.         putexcel A1 = picture("$figuras\fig2_$indi.png")
+{res}{txt}file {bf:c:\Mapas de pobreza\fgt0\01_Data\output\resultados.xlsx} saved
+r; t=0.07 12:21:25
+
+{com}.                 
+.         //Fig 3: Direct vs Small Area Estimates (Left, point) (Right, SE)
+.         cap gen se=sqrt(dir_var)
+{txt}r; t=0.00 12:21:25
+
+{com}.         twoway (scatter fh_mean dir_mean) (line fh_mean fh_mean), ///
+>         graphregion(color(white)) ytitle(Fay-Herriot) xtitle(Direct estimate) /// 
+>         legend(off) name("fig3_right_$indi", replace)
+{res}{txt}r; t=0.48 12:21:26
+
+{com}.         graph export "$figuras\fig3_right_$indi.png", as(png) replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig3_right_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.15 12:21:26
+
+{com}. 
+.         twoway (scatter fh_se se) (line se se), ///
+>         graphregion(color(white)) ytitle(Fay-Herriot (rmse)) xtitle("Direct estimate (SE)") ///
+>         legend(off) name("fig3_left_$indi", replace)
+{res}{txt}r; t=0.31 12:21:26
+
+{com}.         graph export "$figuras\fig3_left_$indi.png", as(png) replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig3_left_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.16 12:21:26
+
+{com}. 
+.         graph combine fig3_right_$indi fig3_left_$indi, graphregion(color(white)) ///
+>                   title("Direct vs Small Area Estimates (Left, point) (Right, SE) for $indi") col(2) xsize(12)
+{res}{txt}r; t=1.42 12:21:28
+
+{com}.         graph export "$figuras\fig3_$indi.png", as(png) replace width(1400) height(800)
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\fig3_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.22 12:21:28
+
+{com}.         putexcel set "$res", sheet("fig3_$indi", replace) modify
+{res}{txt}r; t=0.00 12:21:28
+
+{com}.         putexcel A1 = picture("$figuras\fig3_$indi.png")
+{res}{txt}file {bf:c:\Mapas de pobreza\fgt0\01_Data\output\resultados.xlsx} saved
+r; t=0.06 12:21:28
+
+{com}.                 
+.         //Coefficients of variation
+.         twoway (scatter fh_cv fh_mean), graphregion(color(white)) ///
+>         ytitle(Fay-Herriot (CV)) xtitle(Fay-Herriot estimate) title("$indi") yline(20) legend(off) 
+{res}{txt}r; t=0.30 12:21:28
+
+{com}.         graph export "$figuras\cv_$indi.png", as(png) replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\05_Figuras\cv_fgt0.png{rm}
+saved as
+PNG
+format
+{p_end}
+r; t=0.14 12:21:28
+
+{com}.         
+.         cap gen dir_cv = (sqrt(dir_var)/dir_mean)*100
+{txt}r; t=0.00 12:21:28
+
+{com}.         sum dir_cv fh_cv
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 6}dir_cv {c |}{res}        302    15.64132    14.89085   3.72e-16    95.5328
+{txt}{space 7}fh_cv {c |}{res}        340    11.63268    8.141592   3.72e-16   50.56442
+{txt}r; t=0.00 12:21:28
+
+{com}.                 
+.         gen cv_menor20_dir = (dir_cv<20) if dir_mean !=. 
+{txt}(38 missing values generated)
+r; t=0.00 12:21:28
+
+{com}.         gen cv_menor20_fh  = (fh_cv<20)
+{txt}r; t=0.00 12:21:28
+
+{com}.         
+.         //Check results
+.         sum fh_*
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}fh_mean {c |}{res}        340    .5864124    .2037815   .1406561   .9937919
+{txt}{space 7}fh_se {c |}{res}        340     .059152    .0338534   3.47e-18   .1156538
+{txt}{space 7}fh_cv {c |}{res}        340    11.63268    8.141592   3.72e-16   50.56442
+{txt}{space 5}fh_area {c |}{res}        302   -1.20e-16    .1010244  -.4781729   .2921576
+{txt}{space 4}fh_gamma {c |}{res}        302    .7009082    .2263577   .1757866          1
+{txt}r; t=0.00 12:21:28
+
+{com}.         sum dir_*
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 4}dir_mean {c |}{res}        302    .5773333    .2209331   .0978753   .9938613
+{txt}{space 5}dir_var {c |}{res}        302    .0076292    .0087283   1.20e-35   .0557503
+{txt}{space 6}dir_cv {c |}{res}        302    15.64132    14.89085   3.72e-16    95.5328
+{txt}r; t=0.00 12:21:28
+
+{com}.         sum cv_* 
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+cv_menor20~r {c |}{res}        302    .6754967     .468966          0          1
+{txt}cv_menor20~h {c |}{res}        340    .8470588    .3604613          0          1
+{txt}r; t=0.00 12:21:28
+
+{com}. 
+.         keep depto mun fh_* 
+{txt}r; t=0.00 12:21:28
+
+{com}.         gen indicator = "$indi" 
+{txt}r; t=0.00 12:21:28
+
+{com}. 
+. save "$output\FH_sae_$indi.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+c:\Mapas de pobreza\fgt0\01_Data\output\FH_sae_fgt0.dta{rm}
+saved
+{p_end}
+r; t=0.00 12:21:28
+
+{com}.         
+. cap log close           
+{smcl}
+{com}{sf}{ul off}
