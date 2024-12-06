@@ -1,30 +1,31 @@
-# Mapas de Pobreza Guatemala 2023
+
+# 📊 Mapas de Pobreza Guatemala 2023
 
 Este proyecto proporciona herramientas y datos para analizar y visualizar los índices de pobreza en Guatemala durante el año 2023.
 
-## Tabla de Contenidos
+## 📋 Tabla de Contenidos
 
-- [Descripción](#descripción)
-- [Requisitos Previos](#requisitos-previos)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Contribuciones](#contribuciones)
-- [Licencia](#licencia)
-- [Contacto](#contacto)
+- [📖 Descripción](#-descripción)
+- [🔧 Requisitos Previos](#-requisitos-previos)
+- [⚙️ Instalación](#️-instalación)
+- [🚀 Uso](#-uso)
+- [📁 Estructura del Proyecto](#-estructura-del-proyecto)
+- [🤝 Contribuciones](#-contribuciones)
+- [📄 Licencia](#-licencia)
+- [📞 Contacto](#-contacto)
 
-## Descripción
+## 📖 Descripción
 
 El objetivo de este proyecto es facilitar el análisis de los índices de pobreza en Guatemala mediante la generación de mapas y visualizaciones que permitan una comprensión clara de la distribución geográfica de la pobreza en el país.
 
-## Requisitos Previos
+## 🔧 Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 
 - [Stata](https://www.stata.com/) (versión 15 o superior)
 - [Git](https://git-scm.com/)
 
-## Instalación
+## ⚙️ Instalación
 
 Sigue estos pasos para configurar el proyecto en tu máquina local:
 
@@ -32,18 +33,27 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
 
    ```bash
    git clone https://github.com/githubsege/Mapas-de-pobreza-Guatemala-2023.git
-Accede al directorio del proyecto:
-cd Mapas-de-pobreza-Guatemala-2023
-Uso
+   ```
+
+2. **Accede al directorio del proyecto**:
+
+   ```bash
+   cd Mapas-de-pobreza-Guatemala-2023
+   ```
+
+## 🚀 Uso
 
 Para generar los mapas de pobreza, sigue estos pasos:
 
-Prepara los datos: Asegúrate de que los archivos de datos necesarios se encuentren en la carpeta 01_Data.
-Ejecuta los scripts de Stata: Abre Stata y ejecuta los archivos .do ubicados en la carpeta 02_DoFiles en el orden adecuado para procesar los datos y generar las visualizaciones.
-Estructura del Proyecto
+1. **Prepara los datos**: Asegúrate de que los archivos de datos necesarios se encuentren en la carpeta `01_Data`.
+
+2. **Ejecuta los scripts de Stata**: Abre Stata y ejecuta los archivos `.do` ubicados en la carpeta `02_DoFiles` en el orden adecuado para procesar los datos y generar las visualizaciones.
+
+## 📁 Estructura del Proyecto
 
 El proyecto está organizado de la siguiente manera:
 
+```
 Mapas-de-pobreza-Guatemala-2023/
 │
 ├── 01_Data/
@@ -59,19 +69,23 @@ Mapas-de-pobreza-Guatemala-2023/
 │   └── [Mapas y visualizaciones generadas]
 │
 └── README.md
-Contribuciones
+```
+
+## 🤝 Contribuciones
 
 Las contribuciones son bienvenidas. Si deseas colaborar, por favor sigue estos pasos:
 
-Haz un fork del repositorio.
-Crea una nueva rama para tu función o corrección: git checkout -b feature/nueva-funcion.
-Realiza tus cambios y haz commit de los mismos: git commit -m 'Agrega nueva función'.
-Haz push a la rama: git push origin feature/nueva-funcion.
-Abre una Pull Request.
-Licencia
+1. Haz un fork del repositorio.
+2. Crea una nueva rama para tu función o corrección: `git checkout -b feature/nueva-funcion`.
+3. Realiza tus cambios y haz commit de los mismos: `git commit -m 'Agrega nueva función'`.
+4. Haz push a la rama: `git push origin feature/nueva-funcion`.
+5. Abre una Pull Request.
 
-Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archivo LICENSE.
+## 📄 Licencia
 
-Contacto
+Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archivo [LICENSE](LICENSE).
 
-Para consultas o más información, por favor contacta a githubsege.
+## 📞 Contacto
+
+Para consultas o más información, por favor contacta a [githubsege](https://github.com/githubsege).
+
