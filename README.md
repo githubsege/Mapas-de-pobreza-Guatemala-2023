@@ -1,7 +1,7 @@
 
 # 📊 Mapas de Pobreza Guatemala 2023
 
-Este proyecto proporciona herramientas y datos para analizar y visualizar los índices de pobreza en Guatemala durante el año 2023.
+Este proyecto proporciona el código fuente utilizado para la construcción de los mapas de pobreza a nivel municipal en Guatemala correspondiente al año 2023.
 
 ## 📋 Tabla de Contenidos
 
@@ -45,7 +45,7 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
 
 Para generar los mapas de pobreza, sigue estos pasos:
 
-1. **Prepara los datos**: Asegúrate de que los archivos de datos necesarios se encuentren en la carpeta `01_Data`.
+1. **Prepara los datos**: Asegúrate de que los archivos de datos necesarios se encuentren en la carpeta `01_Data`. Las bases de datos las puedes encontrar en la página web del [INE](https://www.ine.gob.gt/pobreza-menu/).
 
 2. **Ejecuta los scripts de Stata**: Abre Stata y ejecuta los archivos `.do` ubicados en la carpeta `02_DoFiles` en el orden adecuado para procesar los datos y generar las visualizaciones.
 
@@ -87,5 +87,5 @@ Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archiv
 
 ## 📞 Contacto
 
-Para consultas o más información, por favor contacta a [githubsege](https://github.com/githubsege).
+Para consultas o más información, por favor contacta a [Shorjan Estrada](mailto:shorjan.estrada).
 
