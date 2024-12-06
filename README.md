@@ -87,5 +87,5 @@ Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archiv
 
 ## 📞 Contacto
 
-Para consultas o más información, por favor contacta a [Shorjan Estrada](mailto:shorjan.estrada).
+Para consultas o más información, por favor contacta a [Shorjan Estrada](mailto:shorjan@segeplan.gob.gt).
 
